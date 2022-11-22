@@ -45,7 +45,7 @@ public class PRPMethod implements KeyBasedSteganography {
 
     @Override
     public String unpackMessage(int[] key, BufferedImage image) throws UnsupportedEncodingException {
-        byte[] byteArray = new byte[(image.getWidth() * image.getHeight())/8];
+        byte[] byteArray = new byte[image.getWidth()/8];
 
         RGBArray rgbArray = new RGBArray();
         rgbArray.imageToRGBArray(image);

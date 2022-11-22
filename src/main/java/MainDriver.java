@@ -1,3 +1,4 @@
+import steganography.BHMethod;
 import steganography.LSBMethod;
 import steganography.PRPMethod;
 import steganography.PRIMethod;
@@ -18,6 +19,8 @@ public class MainDriver {
         String stegoPath1 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoLSB.bmp";
         String stegoPath2 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoPRI.bmp";
         String stegoPath3 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoPRP.bmp";
+        String stegoPath4 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoBH.bmp";
+
 
         String endMessageMarker = "EnD_mes_1!";
 
@@ -68,6 +71,14 @@ public class MainDriver {
         BufferedImage imgContener3 = readImageFromFile(stegoPath3);
         //prpmethod.unpackMessage(key, imgContener2);
         System.out.println(prpmethod.unpackMessage(keyPRP, imgContener3).split(endMessageMarker)[0]);
+
+        System.out.println("BHMethod !!!!");
+
+        BHMethod bhMethod = new BHMethod();
+        bhMethod.packMessage("Howdy partner" + endMessageMarker, img, stegoPath4);
+        BufferedImage imgContener4 = readImageFromFile(stegoPath4);
+        //prpmethod.unpackMessage(key, imgContener2);
+        System.out.println(bhMethod.unpackMessage(imgContener4).split(endMessageMarker)[0]);
     }
 
     public static void printMatrix(int[][] matrix, int restriction) {
