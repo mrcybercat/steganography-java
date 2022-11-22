@@ -12,7 +12,7 @@
 .mtj.tmp/
 
 # Images
-.bmp
+*.bmp
 
 # Package Files #
 *.jar
