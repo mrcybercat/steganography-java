@@ -1,6 +1,10 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import steganography.*;
+import steganography.keybased.IQMethod;
+import steganography.keybased.PRIMethod;
+import steganography.keybased.PRPMethod;
+import steganography.keyless.BHMethod;
+import steganography.keyless.LSBMethod;
 import untility.FileOperations;
 
 import javax.imageio.ImageIO;

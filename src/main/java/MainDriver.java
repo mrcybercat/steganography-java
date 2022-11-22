@@ -1,4 +1,7 @@
-import steganography.*;
+import steganography.keybased.PRIMethod;
+import steganography.keybased.PRPMethod;
+import steganography.keyless.BHMethod;
+import steganography.keyless.LSBMethod;
 import untility.RGBArray;
 
 import javax.imageio.ImageIO;

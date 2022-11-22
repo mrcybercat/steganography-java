@@ -1,4 +1,4 @@
-package steganography;
+package steganography.interfaces;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

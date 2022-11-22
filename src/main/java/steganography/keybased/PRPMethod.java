@@ -1,5 +1,6 @@
-package steganography;
+package steganography.keybased;
 
+import steganography.interfaces.KeyBasedSteganography;
 import untility.BitsOperations;
 import untility.RGBArray;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * This class uses pseudorandom key to perform steganographic operations.
  *
  * <p>
- * This class implements the {@link steganography.KeyBasedSteganography KeyBasedSteganography} interface.
+ * This class implements the {@link KeyBasedSteganography KeyBasedSteganography} interface.
  *
  * @see KeyBasedSteganography
  */

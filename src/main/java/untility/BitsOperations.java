@@ -1,7 +1,5 @@
 package untility;
 
-import steganography.KeyLessSteganography;
-
 /**
  *
  * The {@code BitsOperations} is an utility class that provides methods

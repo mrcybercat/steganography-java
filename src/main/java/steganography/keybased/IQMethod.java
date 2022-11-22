@@ -1,4 +1,7 @@
-package steganography;
+package steganography.keybased;
+
+import steganography.interfaces.KeyBasedSteganography;
+import steganography.interfaces.KeyLessSteganography;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -12,7 +15,7 @@ import java.io.UnsupportedEncodingException;
  * This class uses pseudorandom key to perform steganographic operations.
  *
  * <p>
- * This class implements the {@link steganography.KeyBasedSteganography KeyBasedSteganography} interface.
+ * This class implements the {@link KeyBasedSteganography KeyBasedSteganography} interface.
  *
  * @see KeyLessSteganography
  */
