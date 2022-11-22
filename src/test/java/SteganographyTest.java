@@ -11,8 +11,8 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SteganographyTest {
-    String picPath = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\Input.bmp";
-    String stegoPath = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\Test_Output.bmp";
+    String picPath = "src\\main\\resources\\Input.bmp";
+    String stegoPath = "src\\main\\resources\\Test_Output.bmp";
     String testMessage = "Hi, do you";
     String endMessageMarker = "EnD_mes_1!";
     BufferedImage image = null;

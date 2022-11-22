@@ -12,13 +12,13 @@ import java.io.IOException;
 public class MainDriver {
 
     public static void main(String[] args) throws IOException {
-        String picPath = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\Input.bmp";
-        String filePath1 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\Output.bmp";
-        String filePath2 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\Output_Random.bmp";
-        String stegoPath1 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoLSB.bmp";
-        String stegoPath2 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoPRI.bmp";
-        String stegoPath3 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoPRP.bmp";
-        String stegoPath4 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoBH.bmp";
+        String picPath = "src\\main\\resources\\Input.bmp";
+        String filePath1 = "src\\main\\resources\\Output.bmp";
+        String filePath2 = "src\\main\\resources\\Output_Random.bmp";
+        String stegoPath1 = "src\\main\\resources\\StegoLSB.bmp";
+        String stegoPath2 = "src\\main\\resources\\StegoPRI.bmp";
+        String stegoPath3 = "src\\main\\resources\\StegoPRP.bmp";
+        String stegoPath4 = "src\\main\\resources\\StegoBH.bmp";
 
 
         String endMessageMarker = "EnD_mes_1!";
