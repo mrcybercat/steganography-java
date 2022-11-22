@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class MainDriver {
@@ -18,6 +19,8 @@ public class MainDriver {
         String stegoPath1 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoLSB.bmp";
         String stegoPath2 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoPRI.bmp";
         String stegoPath3 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoPRP.bmp";
+
+        String endMessageMarker = "EnD_mes_1!";
 
         BufferedImage img = readImageFromFile(picPath);
         RGBArray rgbArray = new RGBArray();
@@ -38,37 +41,43 @@ public class MainDriver {
         randomRGBArray.generateRandomRGBArray(1080, 1920);
         randomRGBArray.saveImageFromRGBArray(filePath2);
 
+        System.out.println("LSBMethod !!!!");
+
         LSBMethod lsbMethod = new LSBMethod();
 
-        lsbMethod.packMessage("Hello it is nice to meet you", img, stegoPath1);
+        lsbMethod.packMessage("Hello it is nice to meet you" + endMessageMarker, img, stegoPath1);
         BufferedImage imgContener1 = readImageFromFile(stegoPath1);
-        System.out.println(lsbMethod.unpackMessage(imgContener1));
+        System.out.println(lsbMethod.unpackMessage(imgContener1).split(endMessageMarker)[0]);
+
 
         System.out.println("PRIMethod !!!!");
 
         PRIMethod priMethod = new PRIMethod();
 
         int[] keyPRI = priMethod.generateKey(img);
-        priMethod.packMessage("Hi, do you", keyPRI, img, stegoPath2);
+        priMethod.packMessage("Hi, do you" + endMessageMarker, keyPRI, img, stegoPath2);
         BufferedImage imgContener2 = readImageFromFile(stegoPath2);
         //prpmethod.unpackMessage(key, imgContener2);
-        System.out.println(priMethod.unpackMessage(keyPRI, imgContener2));
+        System.out.println(priMethod.unpackMessage(keyPRI, imgContener2).split(endMessageMarker)[0]);
 
         System.out.println("PRPMethod !!!!");
 
         PRPMethod prpmethod = new PRPMethod();
 
-        int[] keyPRP = priMethod.generateKey(img);
-        priMethod.packMessage("Hi, do you", keyPRP, img, stegoPath3);
+        int[] keyPRP = prpmethod.generateKey(img);
+        prpmethod.packMessage("Hi, do you pally" + endMessageMarker, keyPRP, img, stegoPath3);
         BufferedImage imgContener3 = readImageFromFile(stegoPath3);
         //prpmethod.unpackMessage(key, imgContener2);
-        System.out.println(priMethod.unpackMessage(keyPRP, imgContener3));
+        System.out.println(prpmethod.unpackMessage(keyPRP, imgContener3).split(endMessageMarker)[0]);
     }
 
     public static void printMatrix(int[][] matrix, int restriction) {
-        for (int i = 0; i< restriction; i++) {
+        for (int i = 0; i < restriction; i++) {
+            if(restriction > matrix.length){
+                restriction = matrix.length;
+            }
             System.out.print("[ ");
-            for (int j = 0; j<matrix[i].length; j++) {
+            for (int j = 0; j < matrix[i].length; j++) {
                 System.out.print(matrix[i][j] + ", ");
             }
             System.out.print("]");

@@ -20,7 +20,6 @@ public class PRPMethod implements KeyBasedSteganography {
         }
 
         Collections.shuffle(Arrays.asList(key));
-        System.out.println(Arrays.toString(key));
         return key;
     }
 
@@ -60,3 +59,4 @@ public class PRPMethod implements KeyBasedSteganography {
         return new String(byteArray, "ASCII");
     }
 }
+// System.out.println(Arrays.toString(key));

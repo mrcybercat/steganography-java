@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
-import static untility.BitsOperations.bitMatrixToByte;
-
 public class PRIMethod implements KeyBasedSteganography {
     @Override
     public int[] generateKey(BufferedImage image) {
@@ -74,7 +72,7 @@ public class PRIMethod implements KeyBasedSteganography {
 
         for(int i = 0; i < byteArray.length; ++i){
             byte[][] valueArray = BitsOperations.byteToBitMatrix(byteArray[i]);
-            byteArray[i] = bitMatrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), keyArray));
+            byteArray[i] = BitsOperations.bitMatrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), keyArray));
         }
         return byteArray;
     }
@@ -84,8 +82,8 @@ public class PRIMethod implements KeyBasedSteganography {
 
         for(int i = 0; i < byteArray.length; i++){
             byte[][] valueArray = BitsOperations.byteToBitMatrix(byteArray[i]);
-            byteArray[i] = bitMatrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), MatrixOperations.inverse(keyArray)));
-            if(i==10){
+            byteArray[i] = BitsOperations.bitMatrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), MatrixOperations.inverse(keyArray)));
+            if(i==100){
                 return byteArray;
             }
         }
