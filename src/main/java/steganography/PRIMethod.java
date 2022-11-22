@@ -20,7 +20,7 @@ import java.util.Objects;
  * <p>
  * This class implements the {@link steganography.KeyBasedSteganography KeyBasedSteganography} interface.
  *
- * @see KeyLessSteganography
+ * @see KeyBasedSteganography
  */
 public class PRIMethod implements KeyBasedSteganography {
     @Override

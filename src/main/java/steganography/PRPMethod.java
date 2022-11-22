@@ -21,7 +21,7 @@ import java.util.List;
  * <p>
  * This class implements the {@link steganography.KeyBasedSteganography KeyBasedSteganography} interface.
  *
- * @see KeyLessSteganography
+ * @see KeyBasedSteganography
  */
 public class PRPMethod implements KeyBasedSteganography {
     @Override
