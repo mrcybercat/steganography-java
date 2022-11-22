@@ -74,7 +74,7 @@ public class IQMethod implements KeyBasedSteganography {
 
         for (int y = 0; y < rgbArray.getBlue().length; y++) {
             int div = blue[y][0] - blue[y][1];
-            byteArray[y/8]= (byte) BitsOperations.modifyAtPosition(byteArray[y/8],counter%8, key[div+255]);
+            byteArray[y/8] = (byte) BitsOperations.modifyAtPosition(byteArray[y/8],counter%8, key[div+255]);
             counter++;
         }
         return new String(byteArray, "ASCII");

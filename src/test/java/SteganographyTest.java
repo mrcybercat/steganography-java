@@ -4,6 +4,7 @@ import steganography.keybased.IQMethod;
 import steganography.keybased.PRIMethod;
 import steganography.keybased.PRPMethod;
 import steganography.keyless.BHMethod;
+import steganography.keyless.KJBMethod;
 import steganography.keyless.LSBMethod;
 import untility.operations.FileOperations;
 
@@ -77,5 +78,15 @@ public class SteganographyTest {
         iqMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
         BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
         assertEquals(iqMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], testMessage, "Packed and unpacked message should be the same");
+    }
+
+    // Kutter-Jordan-Bossen method
+    @Test
+    void KJBMethodTest() throws IOException {
+        KJBMethod kjbMethod = new KJBMethod();
+
+        kjbMethod.packMessage(testMessage + endMessageMarker, image, stegoPath);
+        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
+        assertEquals(kjbMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], testMessage, "Packed and unpacked message should be the same");
     }
 }

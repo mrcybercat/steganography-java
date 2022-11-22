@@ -2,6 +2,7 @@ import steganography.keybased.IQMethod;
 import steganography.keybased.PRIMethod;
 import steganography.keybased.PRPMethod;
 import steganography.keyless.BHMethod;
+import steganography.keyless.KJBMethod;
 import steganography.keyless.LSBMethod;
 import untility.operations.FileOperations;
 import untility.RGBArray;
@@ -23,6 +24,8 @@ public class MainDriver {
         String stegoPath3 = "src\\main\\resources\\StegoPRP.bmp";
         String stegoPath4 = "src\\main\\resources\\StegoBH.bmp";
         String stegoPath5 = "src\\main\\resources\\StegoIQ.bmp";
+        String stegoPath6 = "src\\main\\resources\\StegoKJB.bmp";
+
 
         String endMessageMarker = "EnD_mes_1!";
 
@@ -77,6 +80,7 @@ public class MainDriver {
         System.out.println("IQMethod !!!!");
 
         IQMethod iqMethod = new IQMethod();
+
         int[] keyIQ = iqMethod.generateKey(img);
         System.out.printf("Done!");
         iqMethod.packMessage("Oi mate" + endMessageMarker, keyIQ, img, stegoPath5);
@@ -84,6 +88,14 @@ public class MainDriver {
         BufferedImage imgContener5 = FileOperations.readImageFromFile(stegoPath5);
         //prpmethod.unpackMessage(key, imgContener2);
         System.out.println(iqMethod.unpackMessage(keyIQ, imgContener5).split(endMessageMarker)[0]);
+
+        System.out.println("KJ !!!!");
+
+        KJBMethod kjbMethod = new KJBMethod();
+        kjbMethod.packMessage("Howdy partner" + endMessageMarker, img, stegoPath6);
+        BufferedImage imgContener6 = FileOperations.readImageFromFile(stegoPath6);
+        //prpmethod.unpackMessage(key, imgContener2);
+        System.out.println(kjbMethod.unpackMessage(imgContener6).split(endMessageMarker)[0]);
     }
 }
 
