@@ -6,6 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * The {@code RGBArray} is an utility class that provides an data type for storing RGB values of images in form
+ * of matrices of integers <i>(each color separately)</i>.
+ *
+ * <p>
+ * Contains methods to perform {@link RGBArray#imageToRGBArray(BufferedImage) reading from },
+ * and {@link RGBArray#saveImageFromRGBArray(String) writing to images}
+ *
+ */
 public class RGBArray{
     private int[][] red;
     private int[][] green;
@@ -13,6 +22,13 @@ public class RGBArray{
 
     public RGBArray(){}
 
+
+    /**
+     * Creates a new RGBArray
+     * @param red  A matrix of red color values
+     * @param green  A matrix of green color values
+     * @param blue  A matrix of blue color values
+     */
     public RGBArray(int[][] red, int[][] green, int[][] blue) {
         this.red = red;
         this.green = green;

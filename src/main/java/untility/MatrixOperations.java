@@ -1,7 +1,11 @@
 package untility;
 
 import java.util.Arrays;
-
+/**
+ * The {@code MatrixOperations} is an utility class that provides methods
+ * to perform basic operations on matrices. Such as {@link MatrixOperations#multiply(byte[][], byte[][]) multiplication},
+ * {@link MatrixOperations#inverse(byte[][]) inversion}, {@link MatrixOperations#transpose(byte[][]) transportation} and others
+ */
 public final class MatrixOperations {
     public static byte[][] multiply(byte[][] a, byte[][] b){//a[m][n], b[n][p]
         if(a.length == 0) return new byte[0][0];

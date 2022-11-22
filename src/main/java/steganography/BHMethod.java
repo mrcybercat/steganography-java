@@ -8,6 +8,15 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
+/**
+ * The {@code BHMethod} class provides methods to perform steganographic packing
+ * and unpacking of a message using an BH approach (Block Hiding Method).
+ *
+ * <p>
+ * This class implements the {@link steganography.KeyLessSteganography KeyLessSteganography} interface.
+ *
+ * @see KeyLessSteganography
+ */
 public class BHMethod implements KeyLessSteganography{
     @Override
     public void packMessage(String message, BufferedImage image, String newFilePath) throws IOException {

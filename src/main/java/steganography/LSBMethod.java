@@ -3,11 +3,20 @@ package steganography;
 import untility.RGBArray;
 import untility.BitsOperations;
 
-import java.awt.image.BufferedImage;
+import java.awt.image.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
+/**
+ * The {@code LSBMethod} class provides methods to perform steganographic packing
+ * and unpacking of a message using an LSB approach (Least Significant Bit).
+ *
+ * <p>
+ * This class implements the {@link steganography.KeyLessSteganography KeyLessSteganography} interface.
+ *
+ * @see KeyLessSteganography
+ */
 public class LSBMethod implements KeyLessSteganography {
     @Override
     public void packMessage(String message, BufferedImage image, String newFilePath) throws IOException {

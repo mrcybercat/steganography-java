@@ -10,6 +10,19 @@ import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 
+
+/**
+ * The {@code PRPMethod} class provides methods to perform steganographic packing
+ * and unpacking of a message using an PRP approach (Pseudo Random Permutation).
+ *
+ * <p>
+ * This class uses pseudorandom key to perform steganographic operations.
+ *
+ * <p>
+ * This class implements the {@link steganography.KeyBasedSteganography KeyBasedSteganography} interface.
+ *
+ * @see KeyLessSteganography
+ */
 public class PRPMethod implements KeyBasedSteganography {
     @Override
     public int[] generateKey(BufferedImage image) {

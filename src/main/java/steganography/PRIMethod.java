@@ -10,6 +10,18 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
+/**
+ * The {@code PRIMethod} class provides methods to perform steganographic packing
+ * and unpacking of a message using an PRI approach (Pseudo Random Interval).
+ *
+ * <p>
+ * This class uses pseudorandom key to perform steganographic operations.
+ *
+ * <p>
+ * This class implements the {@link steganography.KeyBasedSteganography KeyBasedSteganography} interface.
+ *
+ * @see KeyLessSteganography
+ */
 public class PRIMethod implements KeyBasedSteganography {
     @Override
     public int[] generateKey(BufferedImage image) {

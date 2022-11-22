@@ -1,5 +1,12 @@
 package untility;
 
+import steganography.KeyLessSteganography;
+
+/**
+ *
+ * The {@code BitsOperations} is an utility class that provides methods
+ * to perform operations on bytes bitwise and convert bytes to bit matrices.
+ */
 public final class BitsOperations {
 
     public static byte getAtPosition(byte byteIn, int position){

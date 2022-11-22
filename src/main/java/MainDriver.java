@@ -1,7 +1,4 @@
-import steganography.BHMethod;
-import steganography.LSBMethod;
-import steganography.PRPMethod;
-import steganography.PRIMethod;
+import steganography.*;
 import untility.RGBArray;
 
 import javax.imageio.ImageIO;
@@ -9,11 +6,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * The {@code MainDriver} class .
+ */
 public class MainDriver {
 
     public static void main(String[] args) throws IOException {
-        String picPath = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\Test_Stegan.bmp";
+        String picPath = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\Input.bmp";
         String filePath1 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\Output.bmp";
         String filePath2 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\Output_Random.bmp";
         String stegoPath1 = "C:\\Study\\Java\\SteganogravyLab1\\src\\main\\resources\\StegoLSB.bmp";
