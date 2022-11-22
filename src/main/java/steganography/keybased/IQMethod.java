@@ -22,7 +22,7 @@ import java.util.Arrays;
  * <p>
  * This class implements the {@link KeyBasedSteganography KeyBasedSteganography} interface.
  *
- * @see KeyLessSteganography
+ * @see KeyBasedSteganography
  */
 public class IQMethod implements KeyBasedSteganography {
 
