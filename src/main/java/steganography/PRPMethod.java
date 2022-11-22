@@ -7,8 +7,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class PRPMethod implements KeyBasedSteganography {
     @Override
@@ -19,7 +19,7 @@ public class PRPMethod implements KeyBasedSteganography {
             key[i] = i;
         }
 
-        Collections.shuffle(Arrays.asList(key));
+        Collections.shuffle(List.of(key));
         return key;
     }
 

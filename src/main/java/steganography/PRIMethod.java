@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 public class PRIMethod implements KeyBasedSteganography {
     @Override
@@ -72,7 +73,7 @@ public class PRIMethod implements KeyBasedSteganography {
 
         for(int i = 0; i < byteArray.length; ++i){
             byte[][] valueArray = BitsOperations.byteToBitMatrix(byteArray[i]);
-            byteArray[i] = BitsOperations.bitMatrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), keyArray));
+            byteArray[i] = BitsOperations.bitMatrixToByte(Objects.requireNonNull(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), keyArray)));
         }
         return byteArray;
     }
@@ -82,7 +83,7 @@ public class PRIMethod implements KeyBasedSteganography {
 
         for(int i = 0; i < byteArray.length; i++){
             byte[][] valueArray = BitsOperations.byteToBitMatrix(byteArray[i]);
-            byteArray[i] = BitsOperations.bitMatrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), MatrixOperations.inverse(keyArray)));
+            byteArray[i] = BitsOperations.bitMatrixToByte(Objects.requireNonNull(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), MatrixOperations.inverse(keyArray))));
             if(i==100){
                 return byteArray;
             }
@@ -106,7 +107,7 @@ public class PRIMethod implements KeyBasedSteganography {
 // MatrixOperations.print(byteMatrix);
 // System.out.println("byte start " + byteValue);
 // System.out.println("byte finish " + byteValue);
-// System.out.println(String.valueOf("lengh " + byteArray.length));
+// System.out.println(String.valueOf("length " + byteArray.length));
 // System.out.println(String.valueOf("i " + i));
 // MatrixOperations.print(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), keyArray));
 // System.out.println("Exiting...");
