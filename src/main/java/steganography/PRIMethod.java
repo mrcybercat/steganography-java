@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
+import static untility.BitsOperations.bitMatrixToByte;
+
 public class PRIMethod implements KeyBasedSteganography {
     @Override
     public int[] generateKey(BufferedImage image) {
@@ -72,8 +74,8 @@ public class PRIMethod implements KeyBasedSteganography {
         byte[][] keyArray = keyToMatrix(key);
 
         for(int i = 0; i < byteArray.length; ++i){
-            byte[][] valueArray = byteToMatrix(byteArray[i]);
-            byteArray[i] = matrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), keyArray));
+            byte[][] valueArray = BitsOperations.byteToBitMatrix(byteArray[i]);
+            byteArray[i] = bitMatrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), keyArray));
         }
         return byteArray;
     }
@@ -82,8 +84,8 @@ public class PRIMethod implements KeyBasedSteganography {
         byte[][] keyArray = keyToMatrix(key);
 
         for(int i = 0; i < byteArray.length; i++){
-            byte[][] valueArray = byteToMatrix(byteArray[i]);
-            byteArray[i] = matrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), MatrixOperations.inverse(keyArray)));
+            byte[][] valueArray = BitsOperations.byteToBitMatrix(byteArray[i]);
+            byteArray[i] = bitMatrixToByte(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), MatrixOperations.inverse(keyArray)));
             if(i==10){
                 return byteArray;
             }
@@ -102,36 +104,6 @@ public class PRIMethod implements KeyBasedSteganography {
         }
         return keyMatrix;
     }
-
-    public byte[][] byteToMatrix(byte byteValue) {
-        byte[][] byteMatrix = new byte[8][1];
-        // BitSet bitset = new BitSet(byteValue);
-        for(int i = 0; i < 8; i++){
-            if(BitsOperations.getOnPosition(byteValue, i) == 0){
-                byteMatrix[i][0] = 0;
-            }
-            else {
-                byteMatrix[i][0] = 1;
-            }
-        }
-        return byteMatrix;
-    }
-
-    public byte matrixToByte(byte[][] byteMatrix) {
-        byte byteValue = 0;
-
-        byteValue = (byte) BitsOperations.modifyOnPosition(byteValue, 0, byteMatrix[0][0]);
-        byteValue = (byte) BitsOperations.modifyOnPosition(byteValue, 1, byteMatrix[0][1]);
-        byteValue = (byte) BitsOperations.modifyOnPosition(byteValue, 2, byteMatrix[0][2]);
-        byteValue = (byte) BitsOperations.modifyOnPosition(byteValue, 3, byteMatrix[0][3]);
-        byteValue = (byte) BitsOperations.modifyOnPosition(byteValue, 4, byteMatrix[0][4]);
-        byteValue = (byte) BitsOperations.modifyOnPosition(byteValue, 5, byteMatrix[0][5]);
-        byteValue = (byte) BitsOperations.modifyOnPosition(byteValue, 6, byteMatrix[0][6]);
-        byteValue = (byte) BitsOperations.modifyOnPosition(byteValue, 7, byteMatrix[0][7]);
-
-        return byteValue;
-    }
-
 }
 // MatrixOperations.print(keyArray);
 // MatrixOperations.print(MatrixOperations.inverse(keyArray));
