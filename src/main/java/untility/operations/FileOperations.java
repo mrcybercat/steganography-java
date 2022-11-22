@@ -1,4 +1,4 @@
-package untility;
+package untility.operations;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

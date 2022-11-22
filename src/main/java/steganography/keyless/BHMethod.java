@@ -1,7 +1,7 @@
 package steganography.keyless;
 
 import steganography.interfaces.KeyLessSteganography;
-import untility.BitsOperations;
+import untility.operations.BitsOperations;
 import untility.RGBArray;
 
 import java.awt.image.BufferedImage;

@@ -2,7 +2,7 @@ package steganography.keyless;
 
 import steganography.interfaces.KeyLessSteganography;
 import untility.RGBArray;
-import untility.BitsOperations;
+import untility.operations.BitsOperations;
 
 import java.awt.image.*;
 import java.io.IOException;

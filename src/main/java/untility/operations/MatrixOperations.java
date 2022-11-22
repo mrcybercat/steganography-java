@@ -1,6 +1,5 @@
-package untility;
+package untility.operations;
 
-import java.util.Arrays;
 /**
  * The {@code MatrixOperations} is an utility class that provides methods
  * to perform basic operations on matrices. Such as {@link MatrixOperations#multiply(byte[][], byte[][]) multiplication},

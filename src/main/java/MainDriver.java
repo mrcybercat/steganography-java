@@ -1,12 +1,12 @@
+import steganography.keybased.IQMethod;
 import steganography.keybased.PRIMethod;
 import steganography.keybased.PRPMethod;
 import steganography.keyless.BHMethod;
 import steganography.keyless.LSBMethod;
+import untility.operations.FileOperations;
 import untility.RGBArray;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -22,22 +22,14 @@ public class MainDriver {
         String stegoPath2 = "src\\main\\resources\\StegoPRI.bmp";
         String stegoPath3 = "src\\main\\resources\\StegoPRP.bmp";
         String stegoPath4 = "src\\main\\resources\\StegoBH.bmp";
-
+        String stegoPath5 = "src\\main\\resources\\StegoIQ.bmp";
 
         String endMessageMarker = "EnD_mes_1!";
 
-        BufferedImage img = readImageFromFile(picPath);
+        BufferedImage img = FileOperations.readImageFromFile(picPath);
         RGBArray rgbArray = new RGBArray();
 
         rgbArray.imageToRGBArray(img);
-
-        System.out.println("Red");
-        printMatrix(rgbArray.getRed(), 10);
-        System.out.println("Green");
-        printMatrix(rgbArray.getGreen(), 10);
-        System.out.println("Blue");
-        printMatrix(rgbArray.getBlue(), 10);
-
         rgbArray.saveImageFromRGBArray(filePath1);
 
         RGBArray randomRGBArray = new RGBArray();
@@ -50,7 +42,7 @@ public class MainDriver {
         LSBMethod lsbMethod = new LSBMethod();
 
         lsbMethod.packMessage("Hello it is nice to meet you" + endMessageMarker, img, stegoPath1);
-        BufferedImage imgContener1 = readImageFromFile(stegoPath1);
+        BufferedImage imgContener1 = FileOperations.readImageFromFile(stegoPath1);
         System.out.println(lsbMethod.unpackMessage(imgContener1).split(endMessageMarker)[0]);
 
 
@@ -60,7 +52,7 @@ public class MainDriver {
 
         int[] keyPRI = priMethod.generateKey(img);
         priMethod.packMessage("Hi, do you" + endMessageMarker, keyPRI, img, stegoPath2);
-        BufferedImage imgContener2 = readImageFromFile(stegoPath2);
+        BufferedImage imgContener2 = FileOperations.readImageFromFile(stegoPath2);
         //prpmethod.unpackMessage(key, imgContener2);
         System.out.println(priMethod.unpackMessage(keyPRI, imgContener2).split(endMessageMarker)[0]);
 
@@ -70,7 +62,7 @@ public class MainDriver {
 
         int[] keyPRP = prpmethod.generateKey(img);
         prpmethod.packMessage("Hi, do you pally" + endMessageMarker, keyPRP, img, stegoPath3);
-        BufferedImage imgContener3 = readImageFromFile(stegoPath3);
+        BufferedImage imgContener3 = FileOperations.readImageFromFile(stegoPath3);
         //prpmethod.unpackMessage(key, imgContener2);
         System.out.println(prpmethod.unpackMessage(keyPRP, imgContener3).split(endMessageMarker)[0]);
 
@@ -78,34 +70,20 @@ public class MainDriver {
 
         BHMethod bhMethod = new BHMethod();
         bhMethod.packMessage("Howdy partner" + endMessageMarker, img, stegoPath4);
-        BufferedImage imgContener4 = readImageFromFile(stegoPath4);
+        BufferedImage imgContener4 = FileOperations.readImageFromFile(stegoPath4);
         //prpmethod.unpackMessage(key, imgContener2);
         System.out.println(bhMethod.unpackMessage(imgContener4).split(endMessageMarker)[0]);
-    }
 
-    public static void printMatrix(int[][] matrix, int restriction) {
-        for (int i = 0; i < restriction; i++) {
-            if(restriction > matrix.length){
-                restriction = matrix.length;
-            }
-            System.out.print("[ ");
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j] + ", ");
-            }
-            System.out.print("]");
-            System.out.println();
-        }
-    }
+        System.out.println("IQMethod !!!!");
 
-    public static BufferedImage readImageFromFile(String picPath){
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File(picPath)); // eventually C:\\ImageTest\\pic2.jpg
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
+        IQMethod iqMethod = new IQMethod();
+        int[] keyIQ = iqMethod.generateKey(img);
+        System.out.printf("Done!");
+        iqMethod.packMessage("Oi mate" + endMessageMarker, keyIQ, img, stegoPath5);
+        System.out.printf("Done!");
+        BufferedImage imgContener5 = FileOperations.readImageFromFile(stegoPath5);
+        //prpmethod.unpackMessage(key, imgContener2);
+        System.out.println(iqMethod.unpackMessage(keyIQ, imgContener5).split(endMessageMarker)[0]);
     }
 }
 
@@ -127,6 +105,12 @@ public class MainDriver {
 // System.out.println("width i = " + width);
 
 
+//        System.out.println("Red");
+//        printMatrix(rgbArray.getRed(), 10);
+//        System.out.println("Green");
+//        printMatrix(rgbArray.getGreen(), 10);
+//        System.out.println("Blue");
+//        printMatrix(rgbArray.getBlue(), 10);
 //    System.out.println("Loop i = " + i +  " j = " + j  );
 /*
 
@@ -188,5 +172,17 @@ public class MainDriver {
         File outputFile = new File(filePath);
         ImageIO.write(image, "bmp", outputFile);
     }
-
+    public static void printMatrix(int[][] matrix, int restriction) {
+        for (int i = 0; i < restriction; i++) {
+            if(restriction > matrix.length){
+                restriction = matrix.length;
+            }
+            System.out.print("[ ");
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + ", ");
+            }
+            System.out.print("]");
+            System.out.println();
+        }
+    }
  */

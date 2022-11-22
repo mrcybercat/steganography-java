@@ -1,5 +1,7 @@
 package untility;
 
+import untility.operations.RandomOperations;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -86,17 +88,12 @@ public class RGBArray{
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                this.red[y][x] = getRandomIntInBounds(0,255);
-                this.green[y][x] = getRandomIntInBounds(0,255);
-                this.blue[y][x] = getRandomIntInBounds(0,255);
+                this.red[y][x] = RandomOperations.getRandomIntInBounds(0,255);
+                this.green[y][x] = RandomOperations.getRandomIntInBounds(0,255);
+                this.blue[y][x] = RandomOperations.getRandomIntInBounds(0,255);
             }
         }
         //return new untility.RGBArray(red, green, blue);
-    }
-
-    private static int getRandomIntInBounds(int min, int max) {
-        Random random = new Random();
-        return random.nextInt(max - min) + min;
     }
 
     public void saveImageFromRGBArray(String filePath) throws IOException {

@@ -5,7 +5,7 @@ import steganography.keybased.PRIMethod;
 import steganography.keybased.PRPMethod;
 import steganography.keyless.BHMethod;
 import steganography.keyless.LSBMethod;
-import untility.FileOperations;
+import untility.operations.FileOperations;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
