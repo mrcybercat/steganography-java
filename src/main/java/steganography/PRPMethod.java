@@ -35,7 +35,7 @@ public class PRPMethod implements KeyBasedSteganography {
 
         for (int y = 0; y < rgbArray.getBlue().length; y++) {
             if((counter/8) < byteArray.length){
-                blue[y][key[y]] = BitsOperations.modifyOnPosition(blue[y][key[y]], 0, BitsOperations.getOnPosition(byteArray[counter/8], counter%8));
+                blue[y][key[y]] = BitsOperations.modifyAtPosition(blue[y][key[y]], 0, BitsOperations.getAtPosition(byteArray[counter/8], counter%8));
             }
             counter++;
         }
@@ -53,7 +53,7 @@ public class PRPMethod implements KeyBasedSteganography {
         int counter = 0;
 
         for (int y = 0; y < rgbArray.getBlue().length; y++) {
-            byteArray[y/8]  = (byte) BitsOperations.modifyOnPosition(byteArray[y/8],counter%8, BitsOperations.getOnPosition((byte) blue[y][key[y]], 0));
+            byteArray[y/8]  = (byte) BitsOperations.modifyAtPosition(byteArray[y/8],counter%8, BitsOperations.getAtPosition((byte) blue[y][key[y]], 0));
             counter++;
         }
         return new String(byteArray, "ASCII");

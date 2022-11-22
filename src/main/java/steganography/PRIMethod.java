@@ -40,7 +40,7 @@ public class PRIMethod implements KeyBasedSteganography {
         for (int y = 0; y < rgbArray.getBlue().length; y++) {
             for (int x = 0; x < rgbArray.getBlue()[0].length; x++) {
                 if((counter/8) < byteArray.length){
-                    blue[y][x] = BitsOperations.modifyOnPosition(blue[y][x], 0, BitsOperations.getOnPosition(byteArray[counter/8], counter%8));
+                    blue[y][x] = BitsOperations.modifyAtPosition(blue[y][x], 0, BitsOperations.getAtPosition(byteArray[counter/8], counter%8));
                 }
                 counter++;
             }
@@ -60,7 +60,7 @@ public class PRIMethod implements KeyBasedSteganography {
 
         for (int y = 0; y < rgbArray.getBlue().length; y++) {
             for (int x = 0; x < rgbArray.getBlue()[0].length; x++) {
-                byteArray[(rgbArray.getBlue()[0].length * y + x)/8] = (byte) BitsOperations.modifyOnPosition(byteArray[(rgbArray.getBlue()[0].length * y + x)/8],counter%8, BitsOperations.getOnPosition((byte) blue[y][x], 0));
+                byteArray[(rgbArray.getBlue()[0].length * y + x)/8] = (byte) BitsOperations.modifyAtPosition(byteArray[(rgbArray.getBlue()[0].length * y + x)/8],counter%8, BitsOperations.getAtPosition((byte) blue[y][x], 0));
                 counter++;
             }
         }
