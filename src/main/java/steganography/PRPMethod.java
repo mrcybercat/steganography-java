@@ -40,7 +40,6 @@ public class PRPMethod implements KeyBasedSteganography {
             }
             counter++;
         }
-
         rgbArray.setBlue(blue);
         rgbArray.saveImageFromRGBArray(newFilePath);
     }
@@ -58,7 +57,6 @@ public class PRPMethod implements KeyBasedSteganography {
             byteArray[y/8]  = (byte) BitsOperations.modifyOnPosition(byteArray[y/8],counter%8, BitsOperations.getOnPosition((byte) blue[y][key[y]], 0));
             counter++;
         }
-
         return new String(byteArray, "ASCII");
     }
 }

@@ -25,7 +25,6 @@ public class PRIMethod implements KeyBasedSteganography {
                 0, 0, 0, 0, 0, 0, 1, 0,
                 0, 0, 0, 1, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 1};
-
         return key;
     }
 
@@ -90,7 +89,6 @@ public class PRIMethod implements KeyBasedSteganography {
                 return byteArray;
             }
         }
-
         return byteArray;
     }
 
