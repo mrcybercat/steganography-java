@@ -1,7 +1,6 @@
 package untility.operations;
 
 /**
- *
  * The {@code BitsOperations} is an utility class that provides methods
  * to perform operations on bytes bitwise and convert bytes to bit matrices.
  */

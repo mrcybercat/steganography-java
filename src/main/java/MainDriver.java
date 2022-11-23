@@ -1,6 +1,6 @@
 import steganography.keybased.IQMethod;
-import steganography.keybased.PRIMethod;
 import steganography.keybased.PRPMethod;
+import steganography.keybased.PRIMethod;
 import steganography.keyless.BHMethod;
 import steganography.keyless.KJBMethod;
 import steganography.keyless.LSBMethod;
@@ -49,25 +49,25 @@ public class MainDriver {
         System.out.println(lsbMethod.unpackMessage(imgContener1).split(endMessageMarker)[0]);
 
 
+        System.out.println("PRPMethod !!!!");
+
+        PRPMethod prpMethod = new PRPMethod();
+
+        int[] keyPRI = prpMethod.generateKey(img);
+        prpMethod.packMessage("Hi, do you" + endMessageMarker, keyPRI, img, stegoPath2);
+        BufferedImage imgContener2 = FileOperations.readImageFromFile(stegoPath2);
+        //prpmethod.unpackMessage(key, imgContener2);
+        System.out.println(prpMethod.unpackMessage(keyPRI, imgContener2).split(endMessageMarker)[0]);
+
         System.out.println("PRIMethod !!!!");
 
         PRIMethod priMethod = new PRIMethod();
 
-        int[] keyPRI = priMethod.generateKey(img);
-        priMethod.packMessage("Hi, do you" + endMessageMarker, keyPRI, img, stegoPath2);
-        BufferedImage imgContener2 = FileOperations.readImageFromFile(stegoPath2);
-        //prpmethod.unpackMessage(key, imgContener2);
-        System.out.println(priMethod.unpackMessage(keyPRI, imgContener2).split(endMessageMarker)[0]);
-
-        System.out.println("PRPMethod !!!!");
-
-        PRPMethod prpmethod = new PRPMethod();
-
-        int[] keyPRP = prpmethod.generateKey(img);
-        prpmethod.packMessage("Hi, do you pally" + endMessageMarker, keyPRP, img, stegoPath3);
+        int[] keyPRP = priMethod.generateKey(img);
+        priMethod.packMessage("Hi, do you pally" + endMessageMarker, keyPRP, img, stegoPath3);
         BufferedImage imgContener3 = FileOperations.readImageFromFile(stegoPath3);
         //prpmethod.unpackMessage(key, imgContener2);
-        System.out.println(prpmethod.unpackMessage(keyPRP, imgContener3).split(endMessageMarker)[0]);
+        System.out.println(priMethod.unpackMessage(keyPRP, imgContener3).split(endMessageMarker)[0]);
 
         System.out.println("BHMethod !!!!");
 

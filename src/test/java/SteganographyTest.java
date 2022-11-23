@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import steganography.keybased.IQMethod;
-import steganography.keybased.PRIMethod;
 import steganography.keybased.PRPMethod;
+import steganography.keybased.PRIMethod;
 import steganography.keyless.BHMethod;
 import steganography.keyless.KJBMethod;
 import steganography.keyless.LSBMethod;
@@ -43,22 +43,22 @@ public class SteganographyTest {
 
     @Test
     void PRIMethodTest() throws IOException {
-        PRIMethod priMethod = new PRIMethod();
-
-        int[] keyPRI = priMethod.generateKey(image);
-        priMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
-        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
-        assertEquals(testMessage, priMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0],  "Packed and unpacked message should be the same");
-    }
-
-    @Test
-    void PRPMethodTest() throws IOException {
         PRPMethod prpMethod = new PRPMethod();
 
         int[] keyPRI = prpMethod.generateKey(image);
         prpMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
         BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
-        assertEquals(testMessage, prpMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
+        assertEquals(testMessage, prpMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0],  "Packed and unpacked message should be the same");
+    }
+
+    @Test
+    void PRPMethodTest() throws IOException {
+        PRIMethod priMethod = new PRIMethod();
+
+        int[] keyPRI = priMethod.generateKey(image);
+        priMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
+        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
+        assertEquals(testMessage, priMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 
     @Test

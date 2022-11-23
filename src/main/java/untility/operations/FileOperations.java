@@ -5,8 +5,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * The {@code FileOperations} is an utility class that provides methods
+ * to interact with files (reading & writing).
+ */
 public final class FileOperations {
-
     public static BufferedImage readImageFromFile(String picPath){
         BufferedImage img = null;
         try {
