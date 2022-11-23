@@ -38,7 +38,7 @@ public class SteganographyTest {
 
         lsbMethod.packMessage(testMessage + endMessageMarker, image, stegoPath);
         BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
-        assertEquals(lsbMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], testMessage, "Packed and unpacked message should be the same");
+        assertEquals(testMessage, lsbMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class SteganographyTest {
         int[] keyPRI = priMethod.generateKey(image);
         priMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
         BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
-        assertEquals(priMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], testMessage, "Packed and unpacked message should be the same");
+        assertEquals(testMessage, priMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0],  "Packed and unpacked message should be the same");
     }
 
     @Test
@@ -58,7 +58,7 @@ public class SteganographyTest {
         int[] keyPRI = prpMethod.generateKey(image);
         prpMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
         BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
-        assertEquals(prpMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], testMessage, "Packed and unpacked message should be the same");
+        assertEquals(testMessage, prpMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 
     @Test
@@ -67,7 +67,7 @@ public class SteganographyTest {
 
         bhMethod.packMessage(testMessage + endMessageMarker, image, stegoPath);
         BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
-        assertEquals(bhMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], testMessage, "Packed and unpacked message should be the same");
+        assertEquals(testMessage, bhMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 
     @Test
@@ -77,16 +77,15 @@ public class SteganographyTest {
         int[] keyPRI = iqMethod.generateKey(image);
         iqMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
         BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
-        assertEquals(iqMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], testMessage, "Packed and unpacked message should be the same");
+        assertEquals(testMessage, iqMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 
-    // Kutter-Jordan-Bossen method
     @Test
     void KJBMethodTest() throws IOException {
         KJBMethod kjbMethod = new KJBMethod();
 
         kjbMethod.packMessage(testMessage + endMessageMarker, image, stegoPath);
         BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
-        assertEquals(kjbMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], testMessage, "Packed and unpacked message should be the same");
+        assertEquals(testMessage, kjbMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 }
