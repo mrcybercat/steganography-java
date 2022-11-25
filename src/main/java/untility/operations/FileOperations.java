@@ -10,10 +10,10 @@ import java.io.IOException;
  * to interact with files (reading & writing).
  */
 public final class FileOperations {
-    public static BufferedImage readImageFromFile(String picPath){
+    public static BufferedImage readImageFromFile(File picFile){
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(picPath)); // eventually C:\\ImageTest\\pic2.jpg
+            img = ImageIO.read(picFile); // eventually C:\\ImageTest\\pic2.jpg
         }
         catch (IOException e) {
             e.printStackTrace();

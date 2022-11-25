@@ -5,6 +5,7 @@ import untility.operations.BitsOperations;
 import untility.RGBArray;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -26,7 +27,7 @@ import java.util.List;
  */
 public class PRIMethod implements KeyBasedSteganography {
     @Override
-    public int[] generateKey(BufferedImage image) {
+    public int[] generateKey(BufferedImage image, String message) {
         int[] key = new int[image.getWidth()];
 
         for (int i = 0; i < key.length; i++) {
@@ -38,7 +39,7 @@ public class PRIMethod implements KeyBasedSteganography {
     }
 
     @Override
-    public void packMessage(String message, int[] key, BufferedImage image, String newFilePath) throws IOException {
+    public void packMessage(String message, int[] key, BufferedImage image, File outputFile) throws IOException {
         Charset charset = Charset.forName("ASCII");
         byte[] byteArray = message.getBytes(charset);
 
@@ -54,7 +55,7 @@ public class PRIMethod implements KeyBasedSteganography {
             counter++;
         }
         rgbArray.setBlue(blue);
-        rgbArray.saveImageFromRGBArray(newFilePath);
+        rgbArray.saveImageFromRGBArray(outputFile);
     }
 
     @Override

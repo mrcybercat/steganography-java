@@ -16,8 +16,8 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SteganographyTest {
-    String picPath = "src\\main\\resources\\Input.bmp";
-    String stegoPath = "src\\main\\resources\\Test_Output.bmp";
+    File picFile = new File("src\\main\\resources\\Input.bmp");
+    File stegoFile = new File("src\\main\\resources\\Test_Output.bmp");
     String testMessage = "Hi, do you";
     String endMessageMarker = "EnD_mes_1!";
     BufferedImage image = null;
@@ -25,7 +25,7 @@ public class SteganographyTest {
     @BeforeEach
     void setUp() {
         try {
-            image = ImageIO.read(new File(picPath)); // eventually C:\\ImageTest\\pic2.jpg
+            image = ImageIO.read(picFile); // eventually C:\\ImageTest\\pic2.jpg
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -36,8 +36,8 @@ public class SteganographyTest {
     void LSBMethodTest() throws IOException {
         LSBMethod lsbMethod = new LSBMethod();
 
-        lsbMethod.packMessage(testMessage + endMessageMarker, image, stegoPath);
-        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
+        lsbMethod.packMessage(testMessage + endMessageMarker, image, stegoFile);
+        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoFile);
         assertEquals(testMessage, lsbMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 
@@ -45,9 +45,9 @@ public class SteganographyTest {
     void PRIMethodTest() throws IOException {
         PRPMethod prpMethod = new PRPMethod();
 
-        int[] keyPRI = prpMethod.generateKey(image);
-        prpMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
-        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
+        int[] keyPRI = prpMethod.generateKey(image, testMessage  + endMessageMarker);
+        prpMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoFile);
+        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoFile);
         assertEquals(testMessage, prpMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0],  "Packed and unpacked message should be the same");
     }
 
@@ -55,9 +55,9 @@ public class SteganographyTest {
     void PRPMethodTest() throws IOException {
         PRIMethod priMethod = new PRIMethod();
 
-        int[] keyPRI = priMethod.generateKey(image);
-        priMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
-        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
+        int[] keyPRI = priMethod.generateKey(image, testMessage  + endMessageMarker);
+        priMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoFile);
+        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoFile);
         assertEquals(testMessage, priMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 
@@ -65,8 +65,8 @@ public class SteganographyTest {
     void BHMethodTest() throws IOException {
         BHMethod bhMethod = new BHMethod();
 
-        bhMethod.packMessage(testMessage + endMessageMarker, image, stegoPath);
-        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
+        bhMethod.packMessage(testMessage + endMessageMarker, image, stegoFile);
+        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoFile);
         assertEquals(testMessage, bhMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 
@@ -74,9 +74,9 @@ public class SteganographyTest {
     void IQMethodTest() throws IOException {
         IQMethod iqMethod = new IQMethod();
 
-        int[] keyPRI = iqMethod.generateKey(image);
-        iqMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoPath);
-        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
+        int[] keyPRI = iqMethod.generateKey(image, testMessage  + endMessageMarker);
+        iqMethod.packMessage(testMessage + endMessageMarker, keyPRI, image, stegoFile);
+        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoFile);
         assertEquals(testMessage, iqMethod.unpackMessage(keyPRI, imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 
@@ -84,8 +84,8 @@ public class SteganographyTest {
     void KJBMethodTest() throws IOException {
         KJBMethod kjbMethod = new KJBMethod();
 
-        kjbMethod.packMessage(testMessage + endMessageMarker, image, stegoPath);
-        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoPath);
+        kjbMethod.packMessage(testMessage + endMessageMarker, image, stegoFile);
+        BufferedImage imgContainer = FileOperations.readImageFromFile(stegoFile);
         assertEquals(testMessage, kjbMethod.unpackMessage(imgContainer).split(endMessageMarker)[0], "Packed and unpacked message should be the same");
     }
 }

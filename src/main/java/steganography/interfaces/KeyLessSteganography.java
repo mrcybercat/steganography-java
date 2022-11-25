@@ -1,6 +1,7 @@
 package steganography.interfaces;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -9,6 +10,6 @@ import java.io.UnsupportedEncodingException;
  * the steganography without a key
  */
 public interface KeyLessSteganography {
-    public void packMessage(String message, BufferedImage image, String newFilePath) throws IOException;
+    public void packMessage(String message, BufferedImage image, File outputFile) throws IOException;
     public String unpackMessage(BufferedImage image) throws UnsupportedEncodingException;
 }

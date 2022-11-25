@@ -14,7 +14,7 @@ import java.util.Random;
  *
  * <p>
  * Contains methods to perform {@link RGBArray#imageToRGBArray(BufferedImage) reading from },
- * and {@link RGBArray#saveImageFromRGBArray(String) writing to images}
+ * and {@link RGBArray#saveImageFromRGBArray(File) writing to images}
  *
  */
 public class RGBArray{
@@ -96,7 +96,7 @@ public class RGBArray{
         //return new untility.RGBArray(red, green, blue);
     }
 
-    public void saveImageFromRGBArray(String filePath) throws IOException {
+    public void saveImageFromRGBArray(File outputFile) throws IOException {
         BufferedImage image = new BufferedImage(
                 this.red[0].length, this.red.length, BufferedImage.TYPE_INT_RGB);
 
@@ -109,7 +109,7 @@ public class RGBArray{
             }
         }
 
-        File outputFile = new File(filePath);
+        //File outputFile = new File(filePath);
         ImageIO.write(image, "bmp", outputFile);
     }
 }

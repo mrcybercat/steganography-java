@@ -6,6 +6,7 @@ import untility.operations.MatrixOperations;
 import untility.RGBArray;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -25,10 +26,10 @@ import java.util.Objects;
  */
 public class PRPMethod implements KeyBasedSteganography {
     @Override
-    public int[] generateKey(BufferedImage image) {
-        int[] key = new int[8 * 8 + 1];
+    public int[] generateKey(BufferedImage image, String message) {
+        int[] key = new int[8 * 8 + 2];
 
-        key = new int[]{8,
+        key = new int[]{8, message.length(),
                 0, 0, 1, 0, 0, 0, 0, 0,
                 0, 1, 0, 0, 0, 0, 0, 0,
                 1, 0, 0, 0, 0, 0, 0, 0,
@@ -41,7 +42,7 @@ public class PRPMethod implements KeyBasedSteganography {
     }
 
     @Override
-    public void packMessage(String message, int[] key, BufferedImage image, String newFilePath) throws IOException {
+    public void packMessage(String message, int[] key, BufferedImage image, File outputFile) throws IOException {
         Charset charset = Charset.forName("ASCII");
         byte[] byteArray = encryptTranspos(key, message.getBytes(charset));
 
@@ -59,7 +60,7 @@ public class PRPMethod implements KeyBasedSteganography {
             }
         }
         rgbArray.setBlue(blue);
-        rgbArray.saveImageFromRGBArray(newFilePath);
+        rgbArray.saveImageFromRGBArray(outputFile);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class PRPMethod implements KeyBasedSteganography {
         for(int i = 0; i < byteArray.length; i++){
             byte[][] valueArray = BitsOperations.byteToBitMatrix(byteArray[i]);
             byteArray[i] = BitsOperations.bitMatrixToByte(Objects.requireNonNull(MatrixOperations.multiply(MatrixOperations.transpose(valueArray), MatrixOperations.inverse(keyArray))));
-            if(i==100){
+            if(i == key[1]){
                 return byteArray;
             }
         }
@@ -109,7 +110,7 @@ public class PRPMethod implements KeyBasedSteganography {
 
         for (int i = 0; i < keyMatrix.length; i++){
             for (int j = 0; j < keyMatrix[0].length; j++){
-                keyMatrix[i][j] = (byte) key[keyMatrix[0].length * i + j + 1];
+                keyMatrix[i][j] = (byte) key[keyMatrix[0].length * i + j + 2];
             }
         }
         return keyMatrix;

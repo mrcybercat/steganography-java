@@ -5,6 +5,7 @@ import untility.RGBArray;
 import untility.operations.BitsOperations;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -23,7 +24,7 @@ public class KJBMethod implements KeyLessSteganography {
     static final int sigma = 3;
 
     @Override
-    public void packMessage(String message, BufferedImage image, String newFilePath) throws IOException {
+    public void packMessage(String message, BufferedImage image, File outputFile) throws IOException {
         Charset charset = Charset.forName("ASCII");
         byte[] byteArray = message.getBytes(charset);
 
@@ -51,7 +52,7 @@ public class KJBMethod implements KeyLessSteganography {
             counter++;
         }
         rgbArray.setBlue(blue);
-        rgbArray.saveImageFromRGBArray(newFilePath);
+        rgbArray.saveImageFromRGBArray(outputFile);
     }
 
     @Override

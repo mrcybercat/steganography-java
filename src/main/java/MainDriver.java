@@ -1,3 +1,5 @@
+import steganography.GenericMethod;
+import steganography.interfaces.KeyBasedSteganography;
 import steganography.keybased.IQMethod;
 import steganography.keybased.PRPMethod;
 import steganography.keybased.PRIMethod;
@@ -8,7 +10,10 @@ import untility.operations.FileOperations;
 import untility.RGBArray;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The {@code MainDriver} class .
@@ -16,18 +21,9 @@ import java.io.IOException;
 public class MainDriver {
 
     public static void main(String[] args) throws IOException {
-        String picPath = "src\\main\\resources\\Input.bmp";
-        String filePath1 = "src\\main\\resources\\Output.bmp";
-        String filePath2 = "src\\main\\resources\\Output_Random.bmp";
-        String stegoPath1 = "src\\main\\resources\\StegoLSB.bmp";
-        String stegoPath2 = "src\\main\\resources\\StegoPRI.bmp";
-        String stegoPath3 = "src\\main\\resources\\StegoPRP.bmp";
-        String stegoPath4 = "src\\main\\resources\\StegoBH.bmp";
-        String stegoPath5 = "src\\main\\resources\\StegoIQ.bmp";
-        String stegoPath6 = "src\\main\\resources\\StegoKJB.bmp";
-
-
-        String endMessageMarker = "EnD_mes_1!";
+        File picPath = new File("src\\main\\resources\\Input.bmp");
+        File filePath1 = new File("src\\main\\resources\\Output.bmp");
+        File filePath2 = new File("src\\main\\resources\\Output_Random.bmp");
 
         BufferedImage img = FileOperations.readImageFromFile(picPath);
         RGBArray rgbArray = new RGBArray();
@@ -40,62 +36,51 @@ public class MainDriver {
         randomRGBArray.generateRandomRGBArray(1080, 1920);
         randomRGBArray.saveImageFromRGBArray(filePath2);
 
-        System.out.println("LSBMethod !!!!");
+        List<Object> methods = initializeMethodList();
+        List<File> stegoPathes = initializePathListList();
+        String endMessageMarker = "EnD_mes_1!";
+        String message = "Hi there!";
 
-        LSBMethod lsbMethod = new LSBMethod();
+        int index = 0;
+        for (Object method : methods) {
+            genericStegoCycle(method, message, endMessageMarker, img, stegoPathes.get(index));
+            index++;
+        }
+    }
 
-        lsbMethod.packMessage("Hello it is nice to meet you" + endMessageMarker, img, stegoPath1);
-        BufferedImage imgContener1 = FileOperations.readImageFromFile(stegoPath1);
-        System.out.println(lsbMethod.unpackMessage(imgContener1).split(endMessageMarker)[0]);
+    public static void genericStegoCycle(Object method, String message, String endMessageMarker, BufferedImage image, File outputFile) throws IOException {
+        System.out.println("Using method " + method.getClass().toString());
 
+        GenericMethod genericMethod = new GenericMethod();
+        int[] key = null;
+        if(method instanceof KeyBasedSteganography){
+            key = genericMethod.generateKey(method, message + endMessageMarker, image);
+        }
+        genericMethod.packMessage(method, message + endMessageMarker, key, image, outputFile);
+        BufferedImage imgContainer = FileOperations.readImageFromFile(outputFile);
+        System.out.println(genericMethod.unpackMessage(method, key, imgContainer).split(endMessageMarker)[0]);
+    }
 
-        System.out.println("PRPMethod !!!!");
+    public static List<Object> initializeMethodList(){
+        List<Object> methods = new ArrayList<Object>();
+        methods.add(new LSBMethod());
+        methods.add(new PRPMethod());
+        methods.add(new PRIMethod());
+        methods.add(new BHMethod());
+        methods.add(new IQMethod());
+        methods.add(new KJBMethod());
+        return methods;
+    }
 
-        PRPMethod prpMethod = new PRPMethod();
-
-        int[] keyPRI = prpMethod.generateKey(img);
-        prpMethod.packMessage("Hi, do you" + endMessageMarker, keyPRI, img, stegoPath2);
-        BufferedImage imgContener2 = FileOperations.readImageFromFile(stegoPath2);
-        //prpmethod.unpackMessage(key, imgContener2);
-        System.out.println(prpMethod.unpackMessage(keyPRI, imgContener2).split(endMessageMarker)[0]);
-
-        System.out.println("PRIMethod !!!!");
-
-        PRIMethod priMethod = new PRIMethod();
-
-        int[] keyPRP = priMethod.generateKey(img);
-        priMethod.packMessage("Hi, do you pally" + endMessageMarker, keyPRP, img, stegoPath3);
-        BufferedImage imgContener3 = FileOperations.readImageFromFile(stegoPath3);
-        //prpmethod.unpackMessage(key, imgContener2);
-        System.out.println(priMethod.unpackMessage(keyPRP, imgContener3).split(endMessageMarker)[0]);
-
-        System.out.println("BHMethod !!!!");
-
-        BHMethod bhMethod = new BHMethod();
-        bhMethod.packMessage("Howdy partner" + endMessageMarker, img, stegoPath4);
-        BufferedImage imgContener4 = FileOperations.readImageFromFile(stegoPath4);
-        //prpmethod.unpackMessage(key, imgContener2);
-        System.out.println(bhMethod.unpackMessage(imgContener4).split(endMessageMarker)[0]);
-
-        System.out.println("IQMethod !!!!");
-
-        IQMethod iqMethod = new IQMethod();
-
-        int[] keyIQ = iqMethod.generateKey(img);
-        System.out.printf("Done!");
-        iqMethod.packMessage("Oi mate" + endMessageMarker, keyIQ, img, stegoPath5);
-        System.out.printf("Done!");
-        BufferedImage imgContener5 = FileOperations.readImageFromFile(stegoPath5);
-        //prpmethod.unpackMessage(key, imgContener2);
-        System.out.println(iqMethod.unpackMessage(keyIQ, imgContener5).split(endMessageMarker)[0]);
-
-        System.out.println("KJ !!!!");
-
-        KJBMethod kjbMethod = new KJBMethod();
-        kjbMethod.packMessage("Howdy partner" + endMessageMarker, img, stegoPath6);
-        BufferedImage imgContener6 = FileOperations.readImageFromFile(stegoPath6);
-        //prpmethod.unpackMessage(key, imgContener2);
-        System.out.println(kjbMethod.unpackMessage(imgContener6).split(endMessageMarker)[0]);
+    public static List<File> initializePathListList(){
+        List<File> stegoPathes = new ArrayList<File>();
+        stegoPathes.add(new File("src\\main\\resources\\StegoLSB.bmp"));
+        stegoPathes.add(new File("src\\main\\resources\\StegoPRI.bmp"));
+        stegoPathes.add(new File("src\\main\\resources\\StegoPRP.bmp"));
+        stegoPathes.add(new File("src\\main\\resources\\StegoBH.bmp"));
+        stegoPathes.add(new File("src\\main\\resources\\StegoIQ.bmp"));
+        stegoPathes.add(new File("src\\main\\resources\\StegoKJB.bmp"));
+        return stegoPathes;
     }
 }
 
@@ -197,4 +182,72 @@ public class MainDriver {
             System.out.println();
         }
     }
+
+
+        String picPath1 = "src\\main\\resources\\Input.bmp";
+        String filePath11 = "src\\main\\resources\\Output.bmp";
+        String filePath22 = "src\\main\\resources\\Output_Random.bmp";
+        String stegoPath11 = "src\\main\\resources\\StegoLSB.bmp";
+        String stegoPath22 = "src\\main\\resources\\StegoPRI.bmp";
+        String stegoPath33 = "src\\main\\resources\\StegoPRP.bmp";
+        String stegoPath44 = "src\\main\\resources\\StegoBH.bmp";
+        String stegoPath55 = "src\\main\\resources\\StegoIQ.bmp";
+        String stegoPath66 = "src\\main\\resources\\StegoKJB.bmp";
+
+
+                System.out.println("LSBMethod !!!!");
+
+        LSBMethod lsbMethod = new LSBMethod();
+
+        lsbMethod.packMessage("Hello it is nice to meet you" + endMessageMarker, img, stegoPath1);
+        BufferedImage imgContener1 = FileOperations.readImageFromFile(stegoPath1);
+        System.out.println(lsbMethod.unpackMessage(imgContener1).split(endMessageMarker)[0]);
+
+        System.out.println("BHMethod !!!!");
+
+        BHMethod bhMethod = new BHMethod();
+        bhMethod.packMessage("Howdy partner" + endMessageMarker, img, stegoPath4);
+        BufferedImage imgContener4 = FileOperations.readImageFromFile(stegoPath4);
+        //prpmethod.unpackMessage(key, imgContener2);
+        System.out.println(bhMethod.unpackMessage(imgContener4).split(endMessageMarker)[0]);
+
+        System.out.println("IQMethod !!!!");
+
+        IQMethod iqMethod = new IQMethod();
+
+        int[] keyIQ = iqMethod.generateKey(img, "Howdy partner" + endMessageMarker);
+        System.out.printf("Done!");
+        iqMethod.packMessage("Oi mate" + endMessageMarker, keyIQ, img, stegoPath5);
+        System.out.printf("Done!");
+        BufferedImage imgContener5 = FileOperations.readImageFromFile(stegoPath5);
+        //prpmethod.unpackMessage(key, imgContener2);
+        System.out.println(iqMethod.unpackMessage(keyIQ, imgContener5).split(endMessageMarker)[0]);
+
+        System.out.println("KJ !!!!");
+
+        KJBMethod kjbMethod = new KJBMethod();
+        kjbMethod.packMessage("Howdy partner" + endMessageMarker, img, stegoPath6);
+        BufferedImage imgContener6 = FileOperations.readImageFromFile(stegoPath6);
+        //prpmethod.unpackMessage(key, imgContener2);
+        System.out.println(kjbMethod.unpackMessage(imgContener6).split(endMessageMarker)[0]);
+
+        System.out.println("PRPMethod !!!!");
+
+        PRPMethod prpMethod = new PRPMethod();
+
+        int[] keyPRI = prpMethod.generateKey(img, "Hi, do you" + endMessageMarker);
+        prpMethod.packMessage("Hi, do you" + endMessageMarker, keyPRI, img, stegoPath2);
+        BufferedImage imgContener2 = FileOperations.readImageFromFile(stegoPath2);
+        //prpmethod.unpackMessage(key, imgContener2);
+        System.out.println(prpMethod.unpackMessage(keyPRI, imgContener2).split(endMessageMarker)[0]);
+
+        System.out.println("PRIMethod !!!!");
+
+        PRIMethod priMethod = new PRIMethod();
+
+        int[] keyPRP = priMethod.generateKey(img, "Hi, do you pally" + endMessageMarker);
+        priMethod.packMessage("Hi, do you pally" + endMessageMarker, keyPRP, img, stegoPath3);
+        BufferedImage imgContener3 = FileOperations.readImageFromFile(stegoPath3);
+        //prpmethod.unpackMessage(key, imgContener2);
+        System.out.println(priMethod.unpackMessage(keyPRP, imgContener3).split(endMessageMarker)[0]);
  */

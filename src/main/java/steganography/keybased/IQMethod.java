@@ -7,6 +7,7 @@ import untility.operations.BitsOperations;
 import untility.operations.RandomOperations;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -28,7 +29,7 @@ public class IQMethod implements KeyBasedSteganography {
 
 
     @Override
-    public int[] generateKey(BufferedImage image) {
+    public int[] generateKey(BufferedImage image, String message) {
         int[] key = new int[255 * 2];
         for (int i = 0; i < key.length; i++) {
             key[i] = RandomOperations.getRandomIntInBounds(0,255) % 2;
@@ -37,7 +38,7 @@ public class IQMethod implements KeyBasedSteganography {
     }
 
     @Override
-    public void packMessage(String message, int[] key, BufferedImage image, String newFilePath) throws IOException {
+    public void packMessage(String message, int[] key, BufferedImage image, File outputFile) throws IOException {
         Charset charset = Charset.forName("ASCII");
         byte[] byteArray = message.getBytes(charset);
 
@@ -60,7 +61,7 @@ public class IQMethod implements KeyBasedSteganography {
             counter++;
         }
         rgbArray.setBlue(blue);
-        rgbArray.saveImageFromRGBArray(newFilePath);
+        rgbArray.saveImageFromRGBArray(outputFile);
     }
 
     @Override
