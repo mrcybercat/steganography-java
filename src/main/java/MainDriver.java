@@ -63,11 +63,11 @@ public class MainDriver {
         Method genericMethod = new Method();
         int[] key = null;
         if(method instanceof KeyBasedSteganography){
-            key = genericMethod.generateKey(message + endMessageMarker, image);
+            key = genericMethod.generateKey(method,message + endMessageMarker, image);
         }
-        genericMethod.packMessage(message + endMessageMarker, key, image, outputFile);
+        genericMethod.packMessage(method,message + endMessageMarker, key, image, outputFile);
         BufferedImage imgContainer = FileOperations.readImageFromFile(outputFile);
-        System.out.println(genericMethod.unpackMessage(key, imgContainer).split(endMessageMarker)[0]);
+        System.out.println(genericMethod.unpackMessage(method, key, imgContainer).split(endMessageMarker)[0]);
     }
 
     public static List<Object> initializeMethodList(){
