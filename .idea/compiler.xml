@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="SteganogravyLab1" options="--add-modules java.base,java.desktop" />
+      <module name="SteganogravyLab1" options="" />
     </option>
   </component>
 </project>

@@ -1,6 +1,8 @@
 package steganography.keyless;
 
+import steganography.Method;
 import steganography.interfaces.KeyLessSteganography;
+import steganography.interfaces.SteganographyMethod;
 import untility.operations.BitsOperations;
 import untility.RGBArray;
 
@@ -19,7 +21,8 @@ import java.nio.charset.Charset;
  *
  * @see KeyLessSteganography
  */
-public class BHMethod implements KeyLessSteganography{
+public class BHMethod extends Method implements KeyLessSteganography, SteganographyMethod {
+
     @Override
     public void packMessage(String message, BufferedImage image, File outputFile) throws IOException {
         Charset charset = Charset.forName("ASCII");
@@ -69,5 +72,10 @@ public class BHMethod implements KeyLessSteganography{
             counter++;
         }
         return new String(byteArray, "ASCII");
+    }
+
+    @Override
+    public String getName() {
+        return "BHMethod";
     }
 }

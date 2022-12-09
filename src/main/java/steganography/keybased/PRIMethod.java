@@ -1,6 +1,8 @@
 package steganography.keybased;
 
+import steganography.Method;
 import steganography.interfaces.KeyBasedSteganography;
+import steganography.interfaces.SteganographyMethod;
 import untility.operations.BitsOperations;
 import untility.RGBArray;
 
@@ -25,7 +27,8 @@ import java.util.List;
  *
  * @see KeyBasedSteganography
  */
-public class PRIMethod implements KeyBasedSteganography {
+public class PRIMethod  extends Method implements KeyBasedSteganography, SteganographyMethod {
+
     @Override
     public int[] generateKey(BufferedImage image, String message) {
         int[] key = new int[image.getWidth()];
@@ -72,6 +75,11 @@ public class PRIMethod implements KeyBasedSteganography {
             counter++;
         }
         return new String(byteArray, "ASCII");
+    }
+
+    @Override
+    public String getName() {
+        return "PRIMethod";
     }
 }
 // System.out.println(Arrays.toString(key));

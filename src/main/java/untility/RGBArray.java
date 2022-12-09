@@ -108,7 +108,6 @@ public class RGBArray{
                 image.setRGB(x, y, rgb);
             }
         }
-
         //File outputFile = new File(filePath);
         ImageIO.write(image, "bmp", outputFile);
     }

@@ -1,7 +1,8 @@
 package steganography.keybased;
 
+import steganography.Method;
 import steganography.interfaces.KeyBasedSteganography;
-import steganography.interfaces.KeyLessSteganography;
+import steganography.interfaces.SteganographyMethod;
 import untility.RGBArray;
 import untility.operations.BitsOperations;
 import untility.operations.RandomOperations;
@@ -11,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 /**
  * The {@code IQMethod} class provides methods to perform steganographic packing
@@ -25,8 +25,7 @@ import java.util.Arrays;
  *
  * @see KeyBasedSteganography
  */
-public class IQMethod implements KeyBasedSteganography {
-
+public class IQMethod extends Method implements KeyBasedSteganography, SteganographyMethod {
 
     @Override
     public int[] generateKey(BufferedImage image, String message) {
@@ -79,6 +78,11 @@ public class IQMethod implements KeyBasedSteganography {
             counter++;
         }
         return new String(byteArray, "ASCII");
+    }
+
+    @Override
+    public String getName() {
+        return "IQMethod";
     }
 }
 

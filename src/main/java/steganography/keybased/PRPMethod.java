@@ -1,6 +1,8 @@
 package steganography.keybased;
 
+import steganography.Method;
 import steganography.interfaces.KeyBasedSteganography;
+import steganography.interfaces.SteganographyMethod;
 import untility.operations.BitsOperations;
 import untility.operations.MatrixOperations;
 import untility.RGBArray;
@@ -24,7 +26,8 @@ import java.util.Objects;
  *
  * @see KeyBasedSteganography
  */
-public class PRPMethod implements KeyBasedSteganography {
+public class PRPMethod extends Method implements KeyBasedSteganography, SteganographyMethod {
+
     @Override
     public int[] generateKey(BufferedImage image, String message) {
         int[] key = new int[8 * 8 + 2];
@@ -114,6 +117,11 @@ public class PRPMethod implements KeyBasedSteganography {
             }
         }
         return keyMatrix;
+    }
+
+    @Override
+    public String getName() {
+        return "PRPMethod";
     }
 }
 // MatrixOperations.print(keyArray);

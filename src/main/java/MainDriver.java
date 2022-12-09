@@ -1,5 +1,7 @@
+import steganography.Method;
 import steganography.GenericMethod;
 import steganography.interfaces.KeyBasedSteganography;
+import steganography.interfaces.SteganographyMethod;
 import steganography.keybased.IQMethod;
 import steganography.keybased.PRPMethod;
 import steganography.keybased.PRIMethod;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@code MainDriver} class .
+ * The {@code MainDriver} class.
  */
 public class MainDriver {
 
@@ -46,19 +48,26 @@ public class MainDriver {
             genericStegoCycle(method, message, endMessageMarker, img, stegoPathes.get(index));
             index++;
         }
+
+        LSBMethod lsbMethod = new LSBMethod();
+        lsbMethod.getClass();
+
+        GenericMethod<SteganographyMethod> genericMethod = new GenericMethod<>();
+
+
     }
 
     public static void genericStegoCycle(Object method, String message, String endMessageMarker, BufferedImage image, File outputFile) throws IOException {
         System.out.println("Using method " + method.getClass().toString());
 
-        GenericMethod genericMethod = new GenericMethod();
+        Method genericMethod = new Method();
         int[] key = null;
         if(method instanceof KeyBasedSteganography){
-            key = genericMethod.generateKey(method, message + endMessageMarker, image);
+            key = genericMethod.generateKey(message + endMessageMarker, image);
         }
-        genericMethod.packMessage(method, message + endMessageMarker, key, image, outputFile);
+        genericMethod.packMessage(message + endMessageMarker, key, image, outputFile);
         BufferedImage imgContainer = FileOperations.readImageFromFile(outputFile);
-        System.out.println(genericMethod.unpackMessage(method, key, imgContainer).split(endMessageMarker)[0]);
+        System.out.println(genericMethod.unpackMessage(key, imgContainer).split(endMessageMarker)[0]);
     }
 
     public static List<Object> initializeMethodList(){
