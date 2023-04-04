@@ -29,9 +29,11 @@ import java.util.List;
  */
 public class PRIMethod  extends Method implements KeyBasedSteganography, SteganographyMethod {
 
+    private int[] key;
+
     @Override
     public int[] generateKey(BufferedImage image, String message) {
-        int[] key = new int[image.getWidth()];
+        key = new int[image.getWidth()];
 
         for (int i = 0; i < key.length; i++) {
             key[i] = i;
@@ -42,7 +44,7 @@ public class PRIMethod  extends Method implements KeyBasedSteganography, Stegano
     }
 
     @Override
-    public void packMessage(String message, int[] key, BufferedImage image, File outputFile) throws IOException {
+    public void packMessage(String message, BufferedImage image, File outputFile, String extension) throws IOException {
         Charset charset = Charset.forName("ASCII");
         byte[] byteArray = message.getBytes(charset);
 
@@ -58,7 +60,7 @@ public class PRIMethod  extends Method implements KeyBasedSteganography, Stegano
             counter++;
         }
         rgbArray.setBlue(blue);
-        rgbArray.saveImageFromRGBArray(outputFile);
+        rgbArray.saveImageFromRGBArray(outputFile, extension);
     }
 
     @Override

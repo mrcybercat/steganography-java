@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
  */
 public interface KeyBasedSteganography {
     public int[] generateKey(BufferedImage image, String message);
-    public void packMessage(String message, int[] key, BufferedImage image, File outputFile) throws IOException;
+    public void packMessage(String message, BufferedImage image, File outputFile, String extension) throws IOException;
     public String unpackMessage(int[] key, BufferedImage image) throws UnsupportedEncodingException;
 }
 

@@ -26,9 +26,9 @@ public class GenericMethod<T extends SteganographyMethod>{
         this.method.generateKey(this.method, args);
     }
 
-    public <T extends SteganographyMethod> void packMessage(Object... args) throws IOException {
-         this.method.packMessage(this.method, args);
-    }
+    //public <T extends SteganographyMethod> void packMessage(Object... args) throws IOException {
+    //     this.method.packMessage(this.method, args);
+    //}
 
     public <T extends SteganographyMethod, U> void unpackMessage(U... args) throws IOException {
         this.method.unpackMessage(this.method, (Object) args);

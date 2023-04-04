@@ -1,13 +1,17 @@
+package drivers;
+
+import org.apache.commons.io.FileUtils;
 import steganography.Method;
-import steganography.GenericMethod;
 import steganography.interfaces.KeyBasedSteganography;
-import steganography.interfaces.SteganographyMethod;
 import steganography.keybased.IQMethod;
 import steganography.keybased.PRPMethod;
 import steganography.keybased.PRIMethod;
 import steganography.keyless.BHMethod;
 import steganography.keyless.KJBMethod;
+import steganography.keyless.LSB8bMethod;
 import steganography.keyless.LSBMethod;
+import untility.ExperimentResult;
+import untility.metrics.ImageMetrics;
 import untility.operations.FileOperations;
 import untility.RGBArray;
 
@@ -16,68 +20,90 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import com.github.snksoft.crc.CRC;
 
 /**
- * The {@code MainDriver} class.
+ * The {@code drivers.MainDriver} class.
+ * TODO: JavaDoc. Obviously
+ * TODO: Implement streams?
  */
 public class MainDriver {
 
     public static void main(String[] args) throws IOException {
-        File picPath = new File("src\\main\\resources\\Input.bmp");
-        File filePath1 = new File("src\\main\\resources\\Output.bmp");
-        File filePath2 = new File("src\\main\\resources\\Output_Random.bmp");
+        File experimentDirectory = new File("src\\main\\resources");
+        File outputFile = new File("src\\main\\resources\\Output.bmp");
 
-        BufferedImage img = FileOperations.readImageFromFile(picPath);
-        RGBArray rgbArray = new RGBArray();
-
-        rgbArray.imageToRGBArray(img);
-        rgbArray.saveImageFromRGBArray(filePath1);
-
-        RGBArray randomRGBArray = new RGBArray();
-
-        randomRGBArray.generateRandomRGBArray(1080, 1920);
-        randomRGBArray.saveImageFromRGBArray(filePath2);
-
-        List<Object> methods = initializeMethodList();
-        List<File> stegoPathes = initializePathListList();
         String endMessageMarker = "EnD_mes_1!";
-        String message = "Hi there!";
+        String message = "Hi there! ";
 
-        int index = 0;
-        for (Object method : methods) {
-            genericStegoCycle(method, message, endMessageMarker, img, stegoPathes.get(index));
-            index++;
+        String[] extensions = new String[] { "bmp", "png" };
+        List<File> pictures = (List<File>) FileUtils.listFiles(experimentDirectory, extensions, true);
+        List<ExperimentResult> experiments = new ArrayList<>();
+
+        for (File picture : pictures) {
+            System.out.println("picture: " + picture.getCanonicalPath() + "is loaded");
         }
 
-        LSBMethod lsbMethod = new LSBMethod();
-        lsbMethod.getClass();
+        for (File picture : pictures) {
+            ExperimentResult experimentResult = new ExperimentResult();
 
-        GenericMethod<SteganographyMethod> genericMethod = new GenericMethod<>();
+            extractProperties(picture, experimentResult);
+            BufferedImage img = FileOperations.readImageFromFile(picture);
+            calculateProperties(img, experimentResult);
+            for(Object method : getAllMethods()){
+                genericStegoCycle(method, message, endMessageMarker, picture, outputFile);
+                calculateMetrics(img, outputFile, experimentResult);
+                experiments.add(experimentResult);
+            }
+        }
+    }
 
+    private static void calculateMetrics(BufferedImage img, File outputFile, ExperimentResult experimentResult) {
+        BufferedImage stegoImage = FileOperations.readImageFromFile(outputFile);
+        RGBArray originArray = new RGBArray();
+        originArray.imageToRGBArray(img);
+        RGBArray stegoArray = new RGBArray();
+        stegoArray.imageToRGBArray(stegoImage);
+        ImageMetrics metrics = new ImageMetrics(originArray, stegoArray);
+
+        experimentResult.setPSNR(metrics.getPSNR());
+        System.out.println("PSNR = " + experimentResult.getPSNR());
+        experimentResult.setSSIM(metrics.getSSIM());
+        System.out.println("SSIM = " + experimentResult.getSSIM());
+        experimentResult.setUIQI(metrics.getUIQI());
+        System.out.println("UIQI = " + experimentResult.getUIQI());
 
     }
 
-    public static void genericStegoCycle(Object method, String message, String endMessageMarker, BufferedImage image, File outputFile) throws IOException {
-        System.out.println("Using method " + method.getClass().toString());
+    private static void calculateProperties(BufferedImage img, ExperimentResult experimentResult) {
+    }
+
+    private static void extractProperties(File picture, ExperimentResult experimentResult) {
+    }
+
+    public static void genericStegoCycle(Object method, String message, String endMessageMarker, File inputFile, File outputFile) throws IOException {
+        System.out.println("Using method " + method.getClass().toString() + " on file " + inputFile.getPath());
+        BufferedImage image = FileOperations.readImageFromFile(inputFile);
 
         Method genericMethod = new Method();
         int[] key = null;
         if(method instanceof KeyBasedSteganography){
             key = genericMethod.generateKey(method,message + endMessageMarker, image);
         }
-        genericMethod.packMessage(method,message + endMessageMarker, key, image, outputFile);
+        genericMethod.packMessage(method,message + endMessageMarker, inputFile, outputFile);
         BufferedImage imgContainer = FileOperations.readImageFromFile(outputFile);
         System.out.println(genericMethod.unpackMessage(method, key, imgContainer).split(endMessageMarker)[0]);
     }
 
-    public static List<Object> initializeMethodList(){
+    public static List<Object> getAllMethods(){
         List<Object> methods = new ArrayList<Object>();
         methods.add(new LSBMethod());
-        methods.add(new PRPMethod());
+        //methods.add(new PRPMethod());
         methods.add(new PRIMethod());
         methods.add(new BHMethod());
         methods.add(new IQMethod());
-        methods.add(new KJBMethod());
+        //methods.add(new KJBMethod());
+        methods.add(new LSB8bMethod());
         return methods;
     }
 
@@ -85,16 +111,49 @@ public class MainDriver {
         List<File> stegoPathes = new ArrayList<File>();
         stegoPathes.add(new File("src\\main\\resources\\StegoLSB.bmp"));
         stegoPathes.add(new File("src\\main\\resources\\StegoPRI.bmp"));
-        stegoPathes.add(new File("src\\main\\resources\\StegoPRP.bmp"));
+        //stegoPathes.add(new File("src\\main\\resources\\StegoPRP.bmp"));
         stegoPathes.add(new File("src\\main\\resources\\StegoBH.bmp"));
         stegoPathes.add(new File("src\\main\\resources\\StegoIQ.bmp"));
-        stegoPathes.add(new File("src\\main\\resources\\StegoKJB.bmp"));
+        //stegoPathes.add(new File("src\\main\\resources\\StegoKJB.bmp"));
         return stegoPathes;
     }
 }
 
 
 
+
+
+;
+
+//        File dir = new File("dir");
+//        System.out.println("Getting all .txt and .jsp files in " + dir.getCanonicalPath()
+//              + " including those in subdirectories");
+//
+
+//    RGBArray rgbArray = new RGBArray();
+
+
+//  CRC crc = new CRC(CRC.Parameters.CRC32);
+
+//rgbArray.imageToRGBArray(img);
+// rgbArray.saveImageFromRGBArray(filePath1);
+
+
+///        List<Object> methods = initializeMethodList();
+//       List<File> stegoPathes = initializePathListList();
+
+
+//        int index = 0;
+
+
+//LSBMethod lsbMethod = new LSBMethod();
+//lsbMethod.getClass();
+//File picPath = new File("src\\main\\resources\\Input.bmp");
+//GenericMethod<SteganographyMethod> genericMethod = new GenericMethod<>();
+//RGBArray randomRGBArray = new RGBArray();
+//File filePath2 = new File("src\\main\\resources\\Output_Random.bmp");
+//randomRGBArray.generateRandomRGBArray(1080, 1920);
+//randomRGBArray.saveImageFromRGBArray(filePath2);
 
 //    System.out.printf("Height = " + image.getHeight() + " / Width  = " + image.getWidth());
 

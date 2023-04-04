@@ -3,6 +3,7 @@ package steganography.keybased;
 import steganography.Method;
 import steganography.interfaces.KeyBasedSteganography;
 import steganography.interfaces.SteganographyMethod;
+import untility.IgnoreInExperiment;
 import untility.operations.BitsOperations;
 import untility.operations.MatrixOperations;
 import untility.RGBArray;
@@ -26,11 +27,15 @@ import java.util.Objects;
  *
  * @see KeyBasedSteganography
  */
+
+@IgnoreInExperiment
 public class PRPMethod extends Method implements KeyBasedSteganography, SteganographyMethod {
+
+    private int[] key;
 
     @Override
     public int[] generateKey(BufferedImage image, String message) {
-        int[] key = new int[8 * 8 + 2];
+        key = new int[8 * 8 + 2];
 
         key = new int[]{8, message.length(),
                 0, 0, 1, 0, 0, 0, 0, 0,
@@ -45,7 +50,7 @@ public class PRPMethod extends Method implements KeyBasedSteganography, Steganog
     }
 
     @Override
-    public void packMessage(String message, int[] key, BufferedImage image, File outputFile) throws IOException {
+    public void packMessage(String message, BufferedImage image, File outputFile, String extension) throws IOException {
         Charset charset = Charset.forName("ASCII");
         byte[] byteArray = encryptTranspos(key, message.getBytes(charset));
 
@@ -63,7 +68,7 @@ public class PRPMethod extends Method implements KeyBasedSteganography, Steganog
             }
         }
         rgbArray.setBlue(blue);
-        rgbArray.saveImageFromRGBArray(outputFile);
+        rgbArray.saveImageFromRGBArray(outputFile, extension);
     }
 
     @Override

@@ -9,6 +9,8 @@ import java.io.IOException;
  * The {@code FileOperations} is an utility class that provides methods
  * to interact with files (reading & writing).
  */
+
+
 public final class FileOperations {
     public static BufferedImage readImageFromFile(File picFile){
         BufferedImage img = null;

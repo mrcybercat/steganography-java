@@ -3,6 +3,7 @@ package steganography.keyless;
 import steganography.Method;
 import steganography.interfaces.KeyLessSteganography;
 import steganography.interfaces.SteganographyMethod;
+import untility.IgnoreInExperiment;
 import untility.RGBArray;
 import untility.operations.BitsOperations;
 
@@ -21,12 +22,14 @@ import java.nio.charset.Charset;
  *
  * @see KeyLessSteganography
  */
+
+@IgnoreInExperiment
 public class KJBMethod  extends Method implements KeyLessSteganography, SteganographyMethod {
     static final float gamma = 0.75F;
     static final int sigma = 3;
 
     @Override
-    public void packMessage(String message, BufferedImage image, File outputFile) throws IOException {
+    public void packMessage(String message, BufferedImage image, File outputFile, String extension) throws IOException {
         Charset charset = Charset.forName("ASCII");
         byte[] byteArray = message.getBytes(charset);
 
@@ -61,7 +64,7 @@ public class KJBMethod  extends Method implements KeyLessSteganography, Steganog
             counter++;
         }
         rgbArray.setBlue(blue);
-        rgbArray.saveImageFromRGBArray(outputFile);
+        rgbArray.saveImageFromRGBArray(outputFile, extension);
     }
 
     @Override

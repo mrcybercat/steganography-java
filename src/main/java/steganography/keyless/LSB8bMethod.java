@@ -3,8 +3,8 @@ package steganography.keyless;
 import steganography.Method;
 import steganography.interfaces.KeyLessSteganography;
 import steganography.interfaces.SteganographyMethod;
-import untility.operations.BitsOperations;
 import untility.RGBArray;
+import untility.operations.BitsOperations;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,16 +12,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
-/**
- * The {@code BHMethod} class provides methods to perform steganographic packing
- * and unpacking of a message using an BH approach (Block Hiding Method).
- *
- * <p>
- * This class implements the {@link KeyLessSteganography KeyLessSteganography} interface.
- *
- * @see KeyLessSteganography
- */
-public class BHMethod extends Method implements KeyLessSteganography, SteganographyMethod {
+public class LSB8bMethod extends Method implements KeyLessSteganography, SteganographyMethod {
 
     @Override
     public void packMessage(String message, BufferedImage image, File outputFile, String extension) throws IOException {
@@ -34,19 +25,12 @@ public class BHMethod extends Method implements KeyLessSteganography, Steganogra
         int counter = 0;
 
         for (int y = 0; y < rgbArray.getBlue().length; y++) {
-            int sum = 0;
             for (int x = 0; x < rgbArray.getBlue()[0].length; x++) {
-                sum += blue[y][x];
-                // System.out.println("sum: " + sum + " - x " + x);
-            }
-            sum = sum % 2;
-            // System.out.println("sum: " + sum);
-            if((counter/8) < byteArray.length){
-                if(sum != BitsOperations.getAtPosition(byteArray[counter/8], counter%8)){
-                    blue[y][0] = BitsOperations.flipAtPosition(blue[y][0], 0);
+                if ((counter / 8) < byteArray.length) {
+                    blue[y][x] = BitsOperations.modifyAtPosition(blue[y][x], 7, BitsOperations.getAtPosition(byteArray[counter / 8], counter % 8));
                 }
+                counter++;
             }
-            counter++;
         }
         rgbArray.setBlue(blue);
         rgbArray.saveImageFromRGBArray(outputFile, extension);
@@ -54,7 +38,7 @@ public class BHMethod extends Method implements KeyLessSteganography, Steganogra
 
     @Override
     public String unpackMessage(BufferedImage image) throws UnsupportedEncodingException {
-        byte[] byteArray = new byte[image.getWidth()/8];
+        byte[] byteArray = new byte[(image.getWidth() * image.getHeight()) / 8];
 
         RGBArray rgbArray = new RGBArray();
         rgbArray.imageToRGBArray(image);
@@ -62,20 +46,17 @@ public class BHMethod extends Method implements KeyLessSteganography, Steganogra
         int counter = 0;
 
         for (int y = 0; y < rgbArray.getBlue().length; y++) {
-            int sum = 0;
             for (int x = 0; x < rgbArray.getBlue()[0].length; x++) {
-                sum += blue[y][x];
+                byteArray[(rgbArray.getBlue()[0].length * y + x) / 8] = (byte) BitsOperations.modifyAtPosition(byteArray[(rgbArray.getBlue()[0].length * y + x) / 8], counter % 8, BitsOperations.getAtPosition((byte) blue[y][x], 7));
+                counter++;
             }
-            sum = sum % 2;
-
-            byteArray[y/8]= (byte) BitsOperations.modifyAtPosition(byteArray[y/8],counter%8, sum);
-            counter++;
         }
         return new String(byteArray, "ASCII");
     }
 
     @Override
     public String getName() {
-        return "BHMethod";
+        return "LSBMethod";
     }
 }
+

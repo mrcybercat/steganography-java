@@ -24,7 +24,7 @@ import java.nio.charset.Charset;
 public class LSBMethod extends Method implements KeyLessSteganography, SteganographyMethod {
 
     @Override
-    public void packMessage(String message, BufferedImage image, File outputFile) throws IOException {
+    public void packMessage(String message, BufferedImage image, File outputFile, String extension) throws IOException {
         Charset charset = Charset.forName("ASCII");
         byte[] byteArray = message.getBytes(charset);
 
@@ -42,7 +42,7 @@ public class LSBMethod extends Method implements KeyLessSteganography, Steganogr
             }
         }
         rgbArray.setBlue(blue);
-        rgbArray.saveImageFromRGBArray(outputFile);
+        rgbArray.saveImageFromRGBArray(outputFile, extension);
     }
 
     @Override

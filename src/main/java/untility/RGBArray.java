@@ -24,6 +24,11 @@ public class RGBArray{
 
     public RGBArray(){}
 
+    public RGBArray(BufferedImage image){
+        RGBArray rgbArray = new RGBArray();
+        rgbArray.imageToRGBArray(image);
+    }
+
 
     /**
      * Creates a new RGBArray
@@ -35,6 +40,12 @@ public class RGBArray{
         this.red = red;
         this.green = green;
         this.blue = blue;
+    }
+
+    public RGBArray(int height, int width){
+        this.red = new int[height][width];
+        this.green = new int[height][width];
+        this.blue = new int[height][width];
     }
 
     public int[][] getRed() {
@@ -80,23 +91,7 @@ public class RGBArray{
         }
         //return new untility.RGBArray(red, green, blue);
     }
-
-    public void generateRandomRGBArray(int height, int width){
-        this.red = new int[height][width];
-        this.green = new int[height][width];
-        this.blue = new int[height][width];
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                this.red[y][x] = RandomOperations.getRandomIntInBounds(0,255);
-                this.green[y][x] = RandomOperations.getRandomIntInBounds(0,255);
-                this.blue[y][x] = RandomOperations.getRandomIntInBounds(0,255);
-            }
-        }
-        //return new untility.RGBArray(red, green, blue);
-    }
-
-    public void saveImageFromRGBArray(File outputFile) throws IOException {
+    public void saveImageFromRGBArray(File outputFile, String extension) throws IOException {
         BufferedImage image = new BufferedImage(
                 this.red[0].length, this.red.length, BufferedImage.TYPE_INT_RGB);
 
@@ -109,6 +104,6 @@ public class RGBArray{
             }
         }
         //File outputFile = new File(filePath);
-        ImageIO.write(image, "bmp", outputFile);
+        ImageIO.write(image, extension, outputFile);
     }
 }

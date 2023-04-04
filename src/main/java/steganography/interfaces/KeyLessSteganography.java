@@ -10,6 +10,6 @@ import java.io.UnsupportedEncodingException;
  * the steganography without a key
  */
 public interface KeyLessSteganography {
-    public void packMessage(String message, BufferedImage image, File outputFile) throws IOException;
+    public void packMessage(String message, BufferedImage image, File outputFile, String extension) throws IOException;
     public String unpackMessage(BufferedImage image) throws UnsupportedEncodingException;
 }

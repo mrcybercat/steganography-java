@@ -4,10 +4,14 @@ import exeptions.IllegalUseOfKeyBasedMethod;
 import steganography.interfaces.KeyBasedSteganography;
 import steganography.interfaces.KeyLessSteganography;
 import steganography.interfaces.SteganographyMethod;
+import untility.operations.FileOperations;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import org.apache.commons.io.FilenameUtils;
+
 
 public class Method implements SteganographyMethod {
 
@@ -52,34 +56,19 @@ public class Method implements SteganographyMethod {
     }
 
     @Override
-    public void packMessage(Object method, Object... args) throws IOException {
-        String message = null;
-        int[] key = null;
-        BufferedImage image = null;
-        File outputFile = null;
-
-        for (Object obj: args) {
-            if(obj instanceof String){
-                message = (String) obj;
-            } else if(obj instanceof int[]){
-                key = (int[]) obj;
-            } else if(obj instanceof BufferedImage){
-                image = (BufferedImage) obj;
-            } else if(obj instanceof File){
-                outputFile = (File) obj;
-            } else{
-                if(obj == null) {
-                    System.out.println("WARNING: Found VarArgDemo of value - null");
-                }else{
-                    System.out.println("WARNING: Found VarArgDemo of value - " + obj.toString() + " - might be unrecognized ");
-                }
-            }
-        }
-
+    public void packMessage(Object method, String message, File inputFile, File outputFile) throws IOException {
         if(method instanceof KeyLessSteganography){
-            ((KeyLessSteganography) method).packMessage(message, image, outputFile);
+            ((KeyLessSteganography) method)
+                    .packMessage(message,
+                            FileOperations.readImageFromFile(inputFile),
+                            outputFile,
+                            FilenameUtils.getExtension(inputFile.getPath()));
         } else if(method instanceof KeyBasedSteganography){
-            ((KeyBasedSteganography) method).packMessage(message, key, image, outputFile);
+            ((KeyBasedSteganography) method)
+                    .packMessage(message,
+                            FileOperations.readImageFromFile(inputFile),
+                            outputFile,
+                            FilenameUtils.getExtension(inputFile.getPath()));
         } else {
             throw new IllegalArgumentException("Method " + method.getClass().toString() + " is not recognized");
         }
