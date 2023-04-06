@@ -125,6 +125,11 @@ public class PRPMethod extends Method implements KeyBasedSteganography, Steganog
     }
 
     @Override
+    public Integer getMaxPayload(BufferedImage container) {
+        return container.getWidth() * container.getHeight();
+    }
+
+    @Override
     public String getName() {
         return "PRPMethod";
     }

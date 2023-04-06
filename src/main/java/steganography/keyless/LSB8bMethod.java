@@ -55,6 +55,11 @@ public class LSB8bMethod extends Method implements KeyLessSteganography, Stegano
     }
 
     @Override
+    public Integer getMaxPayload(BufferedImage container) {
+        return container.getWidth() * container.getHeight();
+    }
+
+    @Override
     public String getName() {
         return "LSBMethod";
     }

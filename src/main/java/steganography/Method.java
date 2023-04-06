@@ -103,4 +103,19 @@ public class Method implements SteganographyMethod {
         }
         return message;
     }
+
+    @Override
+    public Integer getMaxPayload(Object method, BufferedImage container) {
+        Integer result;
+        if(method instanceof KeyLessSteganography){
+            result = ((KeyLessSteganography) method).getMaxPayload(container);
+        } else if(method instanceof KeyBasedSteganography){
+            result = ((KeyBasedSteganography) method).getMaxPayload(container);
+        } else {
+            throw new IllegalArgumentException("Method " + method.getClass().toString() + " is not recognized");
+        }
+        return result;
+    }
+
+
 }

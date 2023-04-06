@@ -22,8 +22,18 @@ public class ImageMetrics {
     public double getPSNR(){
         return PSNR.calculatePSNR(originalImage, stegoImage);
     }
-
-
+    public double getMSE(){
+        return MSE.calculateMSE(originalImage, stegoImage);
+    }
+    public double getNAAD(){
+        return NAAD.calculateNAAD(originalImage, stegoImage);
+    }
+    public double getNCC(){
+        return NCC.calculateNCC(originalImage, stegoImage);
+    }
+    public double getCQ(){
+        return CQ.calculateCQ(originalImage, stegoImage);
+    }
 }
 
 

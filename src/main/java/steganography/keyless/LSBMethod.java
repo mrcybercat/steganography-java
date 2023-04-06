@@ -64,6 +64,11 @@ public class LSBMethod extends Method implements KeyLessSteganography, Steganogr
     }
 
     @Override
+    public Integer getMaxPayload(BufferedImage container) {
+        return container.getWidth() * container.getHeight();
+    }
+
+    @Override
     public String getName() {
         return "LSBMethod";
     }

@@ -16,7 +16,7 @@ public final class RandomOperations {
         //random.nextGaussian();
     }
 
-    public static RGBArray generateRandomRGBArray(int height, int width, NoiseGenerator noise){
+    public static RGBArray[] generateRandomRGBArray(int height, int width, NoiseGenerator noise){
         RGBArray rgbArray = new RGBArray(height, width);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -34,10 +34,11 @@ public final class RandomOperations {
                 rgbArray.getBlue()[y][x] = noise.nextRGBValue();
             }
         }
-        return rgbArray;
+        RGBArray greyArray = new RGBArray(rgbArray.getBlue(), rgbArray.getBlue(), rgbArray.getBlue());
+        return new RGBArray[]{rgbArray, greyArray};
     }
 
-    public static RGBArray generateMonotoneRGBAArray(int height, int width){
+    public static RGBArray generateMonotoneRGBArray(int height, int width){
         RGBArray rgbArray = new RGBArray(height, width);
         int red = RandomOperations.getRandomIntInBounds(0, 255);
         int green = RandomOperations.getRandomIntInBounds(0, 255);

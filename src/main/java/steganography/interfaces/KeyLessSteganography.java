@@ -12,4 +12,5 @@ import java.io.UnsupportedEncodingException;
 public interface KeyLessSteganography {
     public void packMessage(String message, BufferedImage image, File outputFile, String extension) throws IOException;
     public String unpackMessage(BufferedImage image) throws UnsupportedEncodingException;
+    public Integer getMaxPayload(BufferedImage container);
 }

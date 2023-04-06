@@ -19,19 +19,20 @@ public class NoiseGenDriver {
 
     public static void main(String[] args) throws IOException {
         File experimentDirectory = new File("src\\main\\resources");
-        File outputFileG = new File("src\\main\\resources\\OutputRGau.bmp");
-        File outputFileF = new File("src\\main\\resources\\OutputRFrac.bmp");
+        File outputFileGau = new File("src\\main\\resources\\OutputRGau.png");
+        File outputFileGauGray = new File("src\\main\\resources\\OutputRGauGray.png");
+        File outputFileFrac = new File("src\\main\\resources\\OutputRFrac.png");
+        File outputFileFracGray = new File("src\\main\\resources\\OutputRFracGray.png");
 
         String[] extensions = new String[] { "bmp", "png" };
 //    List<File> pictures = (List<File>) FileUtils.listFiles(experimentDirectory, extensions, true);
 //    List<ExperimentResult> experiments = new ArrayList<>();
-        FractalNoise noiseF = new FractalNoise();
-        GaussianNoise noiseG = new GaussianNoise();
-        for (int i = 0; i < 20; i++) {
-            System.out.print("FractalNoise" + noiseF.nextRGBValue()  + "\n");
-            System.out.print("Gaussian" + noiseG.nextRGBValue()  + "\n");
-        }
-        RandomOperations.generateRandomRGBArray(1080,1920, new GaussianNoise()).saveImageFromRGBArray(outputFileG, "png");
-        RandomOperations.generateRandomRGBArray(1080,1920, new FractalNoise()).saveImageFromRGBArray(outputFileF,"png");
+        RGBArray[] rgbArraysGau = RandomOperations.generateRandomRGBArray(1080,1920, new GaussianNoise());
+        rgbArraysGau[0].saveImageFromRGBArray(outputFileGau, "png");
+        rgbArraysGau[1].saveImageFromRGBArray(outputFileGauGray, "png");
+
+        RGBArray[] rgbArraysFrac = RandomOperations.generateRandomRGBArray(1080,1920, new GaussianNoise());
+        rgbArraysFrac[0].saveImageFromRGBArray(outputFileFrac, "png");
+        rgbArraysFrac[1].saveImageFromRGBArray(outputFileFracGray, "png");
     }
 }

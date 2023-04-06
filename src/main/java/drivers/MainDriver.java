@@ -1,13 +1,12 @@
 package drivers;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import steganography.Method;
 import steganography.interfaces.KeyBasedSteganography;
 import steganography.keybased.IQMethod;
-import steganography.keybased.PRPMethod;
 import steganography.keybased.PRIMethod;
 import steganography.keyless.BHMethod;
-import steganography.keyless.KJBMethod;
 import steganography.keyless.LSB8bMethod;
 import steganography.keyless.LSBMethod;
 import untility.ExperimentResult;
@@ -20,7 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.github.snksoft.crc.CRC;
+
+import org.apache.commons.lang.RandomStringUtils;
+import untility.properties.ImageProperties;
 
 /**
  * The {@code drivers.MainDriver} class.
@@ -33,8 +34,8 @@ public class MainDriver {
         File experimentDirectory = new File("src\\main\\resources");
         File outputFile = new File("src\\main\\resources\\Output.bmp");
 
-        String endMessageMarker = "EnD_mes_1!";
-        String message = "Hi there! ";
+        //String endMessageMarker = "EnD_mes_1!";
+        //String message = "Hi there! ";
 
         String[] extensions = new String[] { "bmp", "png" };
         List<File> pictures = (List<File>) FileUtils.listFiles(experimentDirectory, extensions, true);
@@ -46,12 +47,14 @@ public class MainDriver {
 
         for (File picture : pictures) {
             ExperimentResult experimentResult = new ExperimentResult();
+            experimentResult.setNature(picture.getName().split("_")[0]);
+            //experimentResult.setDescription(picture.getName().split("_")[1]);
+            experimentResult.setFormat(FilenameUtils.getExtension(picture.getPath()));
 
-            extractProperties(picture, experimentResult);
             BufferedImage img = FileOperations.readImageFromFile(picture);
             calculateProperties(img, experimentResult);
             for(Object method : getAllMethods()){
-                genericStegoCycle(method, message, endMessageMarker, picture, outputFile);
+                genericStegoCycle(method, picture, outputFile, experimentResult);
                 calculateMetrics(img, outputFile, experimentResult);
                 experiments.add(experimentResult);
             }
@@ -66,6 +69,15 @@ public class MainDriver {
         stegoArray.imageToRGBArray(stegoImage);
         ImageMetrics metrics = new ImageMetrics(originArray, stegoArray);
 
+
+        experimentResult.setNAAD(metrics.getNAAD());
+        System.out.println("NAAD = " + experimentResult.getNAAD());
+        experimentResult.setMSE(metrics.getMSE());
+        System.out.println("MSE = " + experimentResult.getMSE());
+        experimentResult.setNCC(metrics.getNCC());
+        System.out.println("NCC = " + experimentResult.getNCC());
+        experimentResult.setCQ(metrics.getCQ());
+        System.out.println("MSE = " + experimentResult.getCQ());
         experimentResult.setPSNR(metrics.getPSNR());
         System.out.println("PSNR = " + experimentResult.getPSNR());
         experimentResult.setSSIM(metrics.getSSIM());
@@ -76,23 +88,46 @@ public class MainDriver {
     }
 
     private static void calculateProperties(BufferedImage img, ExperimentResult experimentResult) {
+        experimentResult.setSize((img.getWidth() + "x" + img.getHeight()));
+        RGBArray originArray = new RGBArray();
+        originArray.imageToRGBArray(img);
+
+        ImageProperties properties = new ImageProperties(originArray);
+
+        experimentResult.setContrast(properties.getContrast());
+        System.out.println("Contrast = " + experimentResult.getContrast());
+        experimentResult.setHue(properties.getHue());
+        System.out.println("Hue = " + experimentResult.getHue());
+        experimentResult.setSaturation(properties.getSaturation());
+        System.out.println("Saturation = " + experimentResult.getSaturation());
+        experimentResult.setValue(properties.getValue());
+        System.out.println("Value = " + experimentResult.getValue());
     }
 
-    private static void extractProperties(File picture, ExperimentResult experimentResult) {
-    }
-
-    public static void genericStegoCycle(Object method, String message, String endMessageMarker, File inputFile, File outputFile) throws IOException {
+    public static void genericStegoCycle(Object method, File inputFile, File outputFile, ExperimentResult experimentResult) throws IOException {
         System.out.println("Using method " + method.getClass().toString() + " on file " + inputFile.getPath());
+        experimentResult.setAlgorithm(method.getClass().toString().split("\\.")[method.getClass().toString().split("\\.").length - 1]);
         BufferedImage image = FileOperations.readImageFromFile(inputFile);
-
         Method genericMethod = new Method();
+        int maxPayload = genericMethod.getMaxPayload(method, image);
+        String randomStr = RandomStringUtils.randomAscii(maxPayload / 8);
+        experimentResult.setPayload(maxPayload);
+        //System.out.println("A random string fitting container capacity "+  maxPayload + " + digits: " + randomStr);
         int[] key = null;
         if(method instanceof KeyBasedSteganography){
-            key = genericMethod.generateKey(method,message + endMessageMarker, image);
+            key = genericMethod.generateKey(method,randomStr, image);
         }
-        genericMethod.packMessage(method,message + endMessageMarker, inputFile, outputFile);
+        genericMethod.packMessage(method,randomStr, inputFile, outputFile);
         BufferedImage imgContainer = FileOperations.readImageFromFile(outputFile);
-        System.out.println(genericMethod.unpackMessage(method, key, imgContainer).split(endMessageMarker)[0]);
+        //System.out.println(genericMethod.unpackMessage(method, key, imgContainer));
+        if(randomStr.equals(genericMethod.unpackMessage(method, key, imgContainer))){
+            experimentResult.setStatus("Success");
+            System.out.println("Success");
+        }
+        else {
+            experimentResult.setStatus("Warning");
+            System.out.println("Warning");
+        }
     }
 
     public static List<Object> getAllMethods(){

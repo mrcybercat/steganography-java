@@ -75,6 +75,12 @@ public class BHMethod extends Method implements KeyLessSteganography, Steganogra
     }
 
     @Override
+    public Integer getMaxPayload(BufferedImage container) {
+        return container.getWidth();
+    }
+
+
+    @Override
     public String getName() {
         return "BHMethod";
     }

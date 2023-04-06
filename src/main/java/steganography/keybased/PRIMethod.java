@@ -80,6 +80,11 @@ public class PRIMethod  extends Method implements KeyBasedSteganography, Stegano
     }
 
     @Override
+    public Integer getMaxPayload(BufferedImage container) {
+        return container.getWidth();
+    }
+
+    @Override
     public String getName() {
         return "PRIMethod";
     }

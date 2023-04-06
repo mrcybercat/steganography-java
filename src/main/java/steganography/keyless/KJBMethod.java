@@ -119,6 +119,11 @@ public class KJBMethod  extends Method implements KeyLessSteganography, Steganog
     }
 
     @Override
+    public Integer getMaxPayload(BufferedImage container) {
+        return container.getWidth();
+    }
+
+    @Override
     public String getName() {
         return "KJBMethod";
     }

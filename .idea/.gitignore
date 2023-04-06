@@ -17,6 +17,7 @@
 
 # Images
 *.bmp
+*.png
 
 # Package Files #
 *.jar

@@ -34,7 +34,7 @@ public class IQMethod extends Method implements KeyBasedSteganography, Steganogr
     public int[] generateKey(BufferedImage image, String message) {
         key = new int[255 * 2];
         for (int i = 0; i < key.length; i++) {
-            key[i] = RandomOperations.getRandomIntInBounds(0,255) % 2;
+            key[i] = RandomOperations.getRandomIntInBounds(0, 255) % 2;
         }
         return key;
     }
@@ -51,23 +51,21 @@ public class IQMethod extends Method implements KeyBasedSteganography, Steganogr
 
         for (int y = 0; y < rgbArray.getBlue().length; y++) {
             int div = blue[y][0] - blue[y][1];
-            if((counter/8) < byteArray.length){
-                if((div + 255) == 510){
-                    if(key[div + 255 - 1] != BitsOperations.getAtPosition(byteArray[counter/8], counter%8)) {
-                        int x = -1;
-                        while ((key[div + 255 + x] != BitsOperations.getAtPosition(byteArray[counter / 8], counter % 8)) && (x < 509)) {
-                            x--;
-                        }
-                        blue[y][0] = blue[y][0] + x;
-                    }
+            if ((counter / 8) < byteArray.length) {
+                if ((div + 255) == 510) {
+                    div = -255;
                 }
-                else {
-                    if(key[div + 255] != BitsOperations.getAtPosition(byteArray[counter/8], counter%8)){
-                        int x = 1;
-                        while ((key[div + 255 + x] != BitsOperations.getAtPosition(byteArray[counter/8], counter%8)) && (x < 509)){
-                            x++;
+                if (key[div + 255] != BitsOperations.getAtPosition(byteArray[counter / 8], counter % 8)) {
+                    int x = 1;
+                    if ((div + 255 + x) == 510) {
+                        div = -255 + x;
+                    }
+                    blue[y][0] = blue[y][0] + x;
+                    while ((key[div + 255 + x] != BitsOperations.getAtPosition(byteArray[counter / 8], counter % 8)) && (x < 509)) {
+                        x++;
+                        if ((div + 255 + x) == 510) {
+                            div = -255 + x;
                         }
-                        blue[y][0] = blue[y][0] + x;
                     }
                 }
             }
@@ -79,7 +77,7 @@ public class IQMethod extends Method implements KeyBasedSteganography, Steganogr
 
     @Override
     public String unpackMessage(int[] key, BufferedImage image) throws UnsupportedEncodingException {
-        byte[] byteArray = new byte[image.getWidth()/8];
+        byte[] byteArray = new byte[image.getWidth() / 8];
 
         RGBArray rgbArray = new RGBArray();
         rgbArray.imageToRGBArray(image);
@@ -88,12 +86,10 @@ public class IQMethod extends Method implements KeyBasedSteganography, Steganogr
 
         for (int y = 0; y < rgbArray.getBlue().length; y++) {
             int div = blue[y][0] - blue[y][1];
-            if((div + 255) == 510){
-                byteArray[y/8] = (byte) BitsOperations.modifyAtPosition(byteArray[y/8],counter%8, key[div+255 - 1]);
+            if ((div + 255) == 510) {
+                div = -255;
             }
-            else{
-                byteArray[y/8] = (byte) BitsOperations.modifyAtPosition(byteArray[y/8],counter%8, key[div+255]);
-            }
+            byteArray[y / 8] = (byte) BitsOperations.modifyAtPosition(byteArray[y / 8], counter % 8, key[div + 255]);
             counter++;
         }
         return new String(byteArray, "ASCII");
@@ -102,6 +98,11 @@ public class IQMethod extends Method implements KeyBasedSteganography, Steganogr
     @Override
     public String getName() {
         return "IQMethod";
+    }
+
+    @Override
+    public Integer getMaxPayload(BufferedImage container) {
+        return container.getWidth();
     }
 }
 

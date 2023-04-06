@@ -2,22 +2,36 @@ package untility;
 
 public class ExperimentResult {
 
+    private String status;
     private String nature;
+    private String description;
     private String format;
     private String size;
 
     private Double contrast;
     private Double hue;
     private Double saturation;
-    private Double lightness;
+    private Double value;
 
     private String algorithm;
 
-    private Double NAD;
+
+    private Integer payload;
+    private Double NAAD;
+    private Double NCC;
     private Double CQ;
+    private Double MSE;
     private Double PSNR;
     private Double UIQI;
     private Double SSIM;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getNature() {
         return nature;
@@ -25,6 +39,14 @@ public class ExperimentResult {
 
     public void setNature(String nature) {
         this.nature = nature;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getFormat() {
@@ -67,12 +89,12 @@ public class ExperimentResult {
         this.saturation = saturation;
     }
 
-    public Double getLightness() {
-        return lightness;
+    public Double getValue() {
+        return value;
     }
 
-    public void setLightness(Double lightness) {
-        this.lightness = lightness;
+    public void setValue(Double value) {
+        this.value = value;
     }
 
     public String getAlgorithm() {
@@ -83,12 +105,20 @@ public class ExperimentResult {
         this.algorithm = algorithm;
     }
 
-    public Double getNAD() {
-        return NAD;
+    public Integer getPayload() {
+        return payload;
     }
 
-    public void setNAD(Double NAD) {
-        this.NAD = NAD;
+    public void setPayload(Integer payload) {
+        this.payload = payload;
+    }
+
+    public Double getNAAD() {
+        return NAAD;
+    }
+
+    public void setNAAD(Double NAAD) {
+        this.NAAD = NAAD;
     }
 
     public Double getCQ() {
@@ -97,6 +127,22 @@ public class ExperimentResult {
 
     public void setCQ(Double CQ) {
         this.CQ = CQ;
+    }
+
+    public Double getNCC() {
+        return NCC;
+    }
+
+    public void setNCC(Double NCC) {
+        this.NCC = NCC;
+    }
+
+    public Double getMSE() {
+        return MSE;
+    }
+
+    public void setMSE(Double MSE) {
+        this.MSE = MSE;
     }
 
     public Double getPSNR() {
